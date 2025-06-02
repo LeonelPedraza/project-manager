@@ -1,0 +1,9 @@
+export enum ProjectType {
+    GENERIC = "GENERIC",
+    SOFTWARE = "SOFTWARE",
+    MARKETING = "MARKETING",
+    DESIGN = "DESIGN",
+    RESEARCH = "RESEARCH",
+    BUSINESS = "BUSINESS",
+    OTHER = "OTHER",
+}

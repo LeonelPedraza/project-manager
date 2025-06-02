@@ -41,4 +41,3 @@ export type SupabaseUser = {
     updated_at: string;
     is_anonymous: boolean;
 };
-  

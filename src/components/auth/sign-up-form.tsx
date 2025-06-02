@@ -38,7 +38,7 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/login`,
+          emailRedirectTo: `${window.location.origin}/`,
         },
       });
       if (error) throw error;
@@ -57,7 +57,7 @@ export function SignUpForm({
               <LoginFormHeader>
                 <div className="text-center text-sm">
                   Already have an account?{" "}
-                  <Link href="/login" className="underline underline-offset-4">
+                  <Link href="/" className="underline underline-offset-4">
                     Login
                   </Link>
                 </div>

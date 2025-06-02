@@ -20,6 +20,7 @@ import {
   MoreHorizontal,
   CheckCheck,
   ExternalLink,
+  PanelLeft,
 } from "lucide-react"
 // import { formatDistanceToNow } from "date-fns"
 // import { es } from "date-fns/locale"
@@ -43,6 +44,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher"
 // import { SupabaseUser } from "@/types/types"
 import { User as SupabaseUser } from "@supabase/supabase-js"
 import { createClient } from "@/lib/supabase/client";
+import { useSidebar } from "../sidebar";
 
 // Datos de ejemplo para notificaciones
 const notifications = [
@@ -125,6 +127,7 @@ interface NavbarProps {
 
 export function Navbar({ user, onSelectOption }: NavbarProps) {
   const router = useRouter();
+  const { open, setOpen } = useSidebar()
 
   const [notificationsList, setNotificationsList] = useState(notifications)
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
@@ -193,24 +196,27 @@ export function Navbar({ user, onSelectOption }: NavbarProps) {
   const logout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/login");
+    router.push("/");
   };
 
   return (
-    <div className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6 inset-x-0">
-      <div className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-          <span className="font-bold">PH</span>
-        </div>
-        <span className="hidden font-bold md:inline-block">ProjectHub</span>
+    <nav className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6 inset-x-0">
+      <div className="flex gap-2"> 
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setOpen(!open)}
+          title={open ? "Colapsar" : "Expandir"}
+        >
+          <PanelLeft className="h-5 w-5" />
+        </Button>
       </div>
-
       <div className="flex items-center">
-        <ThemeSwitcher/>
+        <ThemeSwitcher />
         <Popover open={isNotificationsOpen} onOpenChange={setIsNotificationsOpen}>
           <PopoverTrigger asChild>
             <Button variant="ghost" className="relative">
-              <Bell className="h-5 w-5"/>
+              <Bell className="h-5 w-5" />
               {unreadCount > 0 && (
                 <Badge className="absolute -right-1 -top-1 h-5 w-5 justify-center rounded-full p-0">
                   {unreadCount}
@@ -471,6 +477,6 @@ export function Navbar({ user, onSelectOption }: NavbarProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-    </div>
+    </nav>
   )
 }
