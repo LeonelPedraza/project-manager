@@ -26,7 +26,7 @@ export default function MembersView() {
                 <Tabs defaultValue="members">
                     <TabsList>
                         <TabsTrigger value="members">Members</TabsTrigger>
-                        <TabsTrigger value="invitations">Invitations</TabsTrigger>
+                        <TabsTrigger value="invitations">Pending Invitations</TabsTrigger>
                     </TabsList>
                     <TabsContent value="members">
                         <MembersTable />

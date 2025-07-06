@@ -14,7 +14,6 @@ import {
     DialogHeader,
     DialogTitle
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useRoles } from "@/hooks/roles/use-roles"
@@ -22,26 +21,25 @@ import { useAppState } from "@/hooks/use-app-state"
 import { useMembers } from "@/hooks/members/use-member"
 
 interface IProps {
+    memberId: string
     open: boolean
     onClose: () => void
 }
 
-export const AddMemberModal: FC<IProps> = ({ open, onClose }) => {
+export const ChangeRoleModal: FC<IProps> = ({ memberId, open, onClose }) => {
 
     const { selectedProject } = useAppState()
 
-    const { addMember } = useMembers(selectedProject?.project.id || '')
+    const { changeMemberRole } = useMembers(selectedProject?.project.id || '')
     const { roles } = useRoles()
 
     const formSchema = z.object({
-        email: z.string().email(),
         role: z.string(),
     })
 
-    const { control, register, reset, formState: { errors }, handleSubmit } = useForm<z.infer<typeof formSchema>>({
+    const { control, reset, formState: { errors }, handleSubmit } = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email: "",
             role: ""
         }
     })
@@ -53,10 +51,9 @@ export const AddMemberModal: FC<IProps> = ({ open, onClose }) => {
                 toast.error("Error adding member")
                 return
             }
-            addMember.mutate({
-                project_id: selectedProject?.project.id || '',
-                invited_email: data.email,
-                role_id: selectedRole.id
+            changeMemberRole.mutate({
+                memberId,
+                roleId: selectedRole.id
             })
             onClose()
             reset()
@@ -78,26 +75,12 @@ export const AddMemberModal: FC<IProps> = ({ open, onClose }) => {
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <DialogHeader>
-                        <DialogTitle>Add member</DialogTitle>
+                        <DialogTitle>Change role</DialogTitle>
                         <DialogDescription>
-                            Envía invitaciones por correo electrónico a nuevos miembros para unirse al proyecto.
+                            Cambia el rol de un miembro del proyecto.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4">
-                        <div className="grid gap-3">
-                            <Label htmlFor="email" className="flex items-center">
-                                Email <span className="text-red-500">*</span>
-                            </Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="member@gmail.com"
-                                className={errors.email ? "border-red-500" : ""}
-                                required
-                                {...register('email')}
-                            />
-                            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-                        </div>
                         <div className="grid gap-3">
                             <Label htmlFor="role">Rol <span className="text-red-500">*</span></Label>
                             <Controller
@@ -127,10 +110,10 @@ export const AddMemberModal: FC<IProps> = ({ open, onClose }) => {
                     </div>
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button variant="outline" disabled={addMember.isPending}>Cancel</Button>
+                            <Button variant="outline" disabled={changeMemberRole.isPending}>Cancel</Button>
                         </DialogClose>
-                        <Button type="submit" disabled={addMember.isPending} className="">
-                            {addMember.isPending ? 'Adding...' : 'Add'}  
+                        <Button type="submit" disabled={changeMemberRole.isPending} className="">
+                            {changeMemberRole.isPending ? 'Updating...' : 'Update'}  
                         </Button>
                     </DialogFooter>
                 </form>

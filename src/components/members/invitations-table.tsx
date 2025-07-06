@@ -25,13 +25,13 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
-import { useMemberInvitations } from "@/hooks/projects/use-member-invitations"
 import { DeleteInvitationModal } from "../modals/members/delete-invitation"
+import { useMembers } from "@/hooks/members/use-member"
 
 export const InvitationssTable = () => {
 
     const { selectedProject } = useAppState()
-    const { invitations, isLoading } = useMemberInvitations(selectedProject?.project.id || '')
+    const { invitations: { data, isLoading } } = useMembers(selectedProject?.project.id || '')
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -78,7 +78,7 @@ export const InvitationssTable = () => {
     ]
 
     const table = useReactTable({
-        data: invitations,
+        data: data ?? [],
         columns,
         getCoreRowModel: getCoreRowModel(),
         onColumnFiltersChange: setColumnFilters,

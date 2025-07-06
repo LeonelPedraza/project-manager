@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { useProjectMembers } from "@/hooks/projects/use-project-memebers"
 import { useAppState } from "@/hooks/use-app-state"
 import type { ProjectMember } from "@/types/types"
 import {
@@ -18,15 +17,37 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+    DropdownMenuItem,
+    DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu"
+import { MoreHorizontal } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { useMembers } from "@/hooks/members/use-member"
+import { DeleteMemberModal } from "../modals/members/delete-member"
+import { ChangeRoleModal } from "../modals/members/change-role"
+import { useUser } from "@/hooks/use-user"
 
 export const MembersTable = () => {
 
+    const { user } = useUser()
+
     const { selectedProject } = useAppState()
-    const { projectMembers, isLoading } = useProjectMembers(selectedProject?.project.id || '')
+    const { members: { data, isLoading } } = useMembers(selectedProject?.project.id || '')
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
+    const [changeRoleModalOpen, setChangeRoleModalOpen] = useState(false)
+    const [changeRoleModalMemberId, setChangeRoleModalMemberId] = useState<string>('')
+
+    const handleChangeRole = (memberId: string) => {
+        setChangeRoleModalMemberId(memberId)
+        setChangeRoleModalOpen(true)
+    }
 
     const columns: ColumnDef<ProjectMember>[] = [
         {
@@ -45,10 +66,38 @@ export const MembersTable = () => {
             id: 'role',
             header: 'Role',
         },
+        {
+            id: "actions",
+            cell: ({ row }) => {
+                const member = row.original
+                if (user?.id !== member.profiles.id) {
+
+                    return (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                    <span className="sr-only">Open menu</span>
+                                    <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                    onClick={() => handleChangeRole(member.id ?? '')}
+                                >
+                                    Change role
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DeleteMemberModal memberId={member.id ?? ''} memberName={member.profiles.username ?? ''} />
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    )
+                }
+            },
+        }
     ]
 
     const table = useReactTable({
-        data: projectMembers,
+        data: data ?? [],
         columns,
         getCoreRowModel: getCoreRowModel(),
         onColumnFiltersChange: setColumnFilters,
@@ -126,6 +175,7 @@ export const MembersTable = () => {
                     </TableBody>
                 </Table>
             </div>
+            <ChangeRoleModal memberId={changeRoleModalMemberId} open={changeRoleModalOpen} onClose={() => setChangeRoleModalOpen(false)} />
         </>
     )
 }

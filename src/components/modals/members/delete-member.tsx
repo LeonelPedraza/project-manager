@@ -13,25 +13,20 @@ import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
 import type { FC } from "react"
 import { toast } from "sonner"
-import type { Invitation } from "@/types/types"
 import { useMembers } from "@/hooks/members/use-member"
 
 interface IProps {
-    projectId: string
-    invitation: Invitation | null
+    memberId: string
+    memberName: string
 }
 
-export const DeleteInvitationModal: FC<IProps> = ({ projectId, invitation }) => {
+export const DeleteMemberModal: FC<IProps> = ({ memberId, memberName }) => {
 
-    const { deleteInvitation } = useMembers(projectId)
+    const { deleteMember } = useMembers(memberId)
 
     const handleDelete = async () => {
-        if (!invitation) {
-            toast.error("No invitation selected")
-            return
-        }
         try {
-            deleteInvitation.mutate({ id: invitation.id })
+            deleteMember.mutate({ memberId })
             toast.success("Project deleted successfully")
         } catch (error) {
             console.error(error)
@@ -44,14 +39,14 @@ export const DeleteInvitationModal: FC<IProps> = ({ projectId, invitation }) => 
             <AlertDialogTrigger asChild>
                 <Button variant='ghost' size='sm' className="w-full justify-start hover:bg-red-500 hover:text-red-500">
                     <Trash2 className="text-red-500" />
-                    <span className="text-red-500">Delete Invitation</span>
+                    <span className="text-red-500">Delete</span>
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the invitation to <strong className="text-white">"{invitation?.invited_email}"</strong>.
+                        This action cannot be undone. This will permanently delete <strong className="text-white">"{memberName}"</strong> from the project.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

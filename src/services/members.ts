@@ -1,13 +1,14 @@
 import { supabase } from "@/supabase/supabase";
 import { type Invitation, type ProjectMember } from "@/types/types";
 
-export const getProjectMembers = async (projectId: string): Promise<ProjectMember[]> => {
+export const get_project_members = async (projectId: string): Promise<ProjectMember[]> => {
     try {
         const { data, error } = await supabase
             .from('members')
             .select(`
-                profiles (username, avatar_url),
-                roles (name)
+                id,
+                profiles (id, username, avatar_url),
+                roles (id, name)
             `)
             .eq('project_id', projectId)
         if (error) {
@@ -23,7 +24,7 @@ export const getProjectMembers = async (projectId: string): Promise<ProjectMembe
     }
 }
 
-export const getInvitations = async ({projectId}: {projectId: string}): Promise<Invitation[]> => {
+export const get_invitations = async ({projectId}: {projectId: string}): Promise<Invitation[]> => {
     try {
         const { data, error } = await supabase
             .from('invitations')
@@ -35,6 +36,7 @@ export const getInvitations = async ({projectId}: {projectId: string}): Promise<
                 invited_by_user_id:profiles (username)
             `)
             .eq('project_id', projectId)
+            .eq('status', 'PENDING')
         if (error) {
             throw Error(error.message)
         }
@@ -48,7 +50,7 @@ export const getInvitations = async ({projectId}: {projectId: string}): Promise<
     }
 }
 
-export const getUserInvitations = async (email: string): Promise<Invitation[]> => {
+export const get_user_invitations = async (email: string): Promise<Invitation[]> => {
     try {
         const { data, error } = await supabase
             .from('invitations')
@@ -74,12 +76,7 @@ export const getUserInvitations = async (email: string): Promise<Invitation[]> =
     }
 }
 
-interface InviteMemberParams {
-    project_id: string
-    invited_email: string
-    role_id: string
-}
-export const inviteMember = async ({ project_id, invited_email, role_id }: InviteMemberParams) => {
+export const invite_member = async ({ project_id, invited_email, role_id }: {project_id: string, invited_email: string, role_id: string}) => {
     try {
         const { data: { user} } = await supabase.auth.getUser()
         const { data, error } = await supabase.functions.invoke('invite-user', {
@@ -95,6 +92,40 @@ export const inviteMember = async ({ project_id, invited_email, role_id }: Invit
         }
         console.log(data)
         return
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message)
+            throw error
+        }
+    }
+}
+
+export const change_member_role = async ({ memberId, roleId }: { memberId: string, roleId: string }) => {
+    try {
+        const { error } = await supabase
+            .from('members')
+            .update({ role_id: roleId })
+            .eq('id', memberId)
+        if (error) {
+            throw Error(error.message)
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message)
+            throw error
+        }
+    }
+}
+
+export const delete_member = async ({ memberId }: { memberId: string }) => {
+    try {
+        const { error } = await supabase
+            .from('members')
+            .delete()
+            .eq('id', memberId)
+        if (error) {
+            throw Error(error.message)
+        }
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
@@ -125,7 +156,7 @@ export const accept_invitation = async ({ invitation_id, project_id }: { invitat
     }
 }
 
-export const removeInvitation = async ({ id }: { id: string }) => {
+export const remove_invitation = async ({ id }: { id: string }) => {
     try {
         const { error } = await supabase
             .from('invitations')

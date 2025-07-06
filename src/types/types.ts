@@ -14,6 +14,7 @@ export interface Profile {
 export type MemberStatus = 'ACCEPTED' | 'REJECTED' | 'PENDING';
 
 export interface ProjectMember {
+    id?: string
     profiles: Profile
     roles: Role
     status: MemberStatus

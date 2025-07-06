@@ -8,7 +8,7 @@ import DashboardLayout from './pages/dashboard/layout'
 import Home from './pages/dashboard/home'
 import Project from './pages/dashboard/project'
 import MembersView from './pages/dashboard/views/members-view'
-import { Profile } from './pages/auth/profile'
+import { Profile } from './pages/dashboard/views/profile'
 
 function App() {
 

@@ -52,8 +52,8 @@ export default function OAuthCallback() {
     }, [navigate]);
 
     return (
-        <div>
-            <p>Processing authentication, please wait...</p>
+        <div className="w-full flex justify-center">
+            <p className="text-xl mt-8">Processing authentication, please wait...</p>
         </div>
     );
 }

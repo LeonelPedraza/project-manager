@@ -34,7 +34,7 @@ const sidebarItems: ISidebarItem[] = [
     },
     {
         icon: UsersRound,
-        title: "Members",
+        title: "Team",
         to: "/dashboard/members",
     },
     {
