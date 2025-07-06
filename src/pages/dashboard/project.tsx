@@ -1,10 +1,10 @@
 import { useAppState } from "@/hooks/use-app-state"
 
 export default function Project() {
-    const { selectedProject} = useAppState()
+    const { selectedProject } = useAppState()
     return (
         <div>
-            Project {selectedProject?.name}
+            Project {selectedProject?.project?.name}
         </div>
     )
 }

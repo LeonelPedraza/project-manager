@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from "@/components/ui/dropdown-menu"
 import { Laptop, Moon, Sun } from "lucide-react"
 import { type Theme } from "@/context/theme-context"
-import { useTheme } from "next-themes";
+import { useTheme } from "@/hooks/use-theme";
 
 const ICON_SIZE = 24;
 

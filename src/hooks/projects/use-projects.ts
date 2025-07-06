@@ -1,14 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createProject, deleteProject, getProjects, updateProject } from "@/services/project"
-import type { Project } from "@/types/types"
+import type { Projects } from "@/types/types"
 
-const PROJECTS_QUERY_KEY = 'projects'
+export const PROJECTS_QUERY_KEY = 'projects'
 
 export const useProjects = () => { 
     
     const queryClient = useQueryClient()
 
-    const { data, isLoading, isError, error } = useQuery<Project[]>({
+    const { data, isLoading, isError, error } = useQuery<Projects[]>({
         queryKey: [PROJECTS_QUERY_KEY],
         queryFn: getProjects,
         staleTime: 5 * 60 * 1000,
@@ -29,14 +29,14 @@ export const useProjects = () => {
     const modifyProject = useMutation({
         mutationFn: updateProject,
         onSuccess: (updatedProject) => {
-            queryClient.setQueryData([PROJECTS_QUERY_KEY], (oldProjects: Project[]) => {
-                return oldProjects.map(project => 
-                    project.id === updatedProject?.id ? 
+            queryClient.setQueryData([PROJECTS_QUERY_KEY], (oldProjects: Projects[]) => {
+                return oldProjects.map((item) => 
+                    item.project.id === updatedProject?.id ? 
                         {
-                            profiles: project.profiles,
-                            ...updatedProject
+                            ...item,
+                            project: updatedProject
                         } : 
-                        project 
+                        item 
                     )
             })
         },
@@ -48,8 +48,8 @@ export const useProjects = () => {
     const removeProject = useMutation({
         mutationFn: deleteProject,
         onSuccess: (deletedProjectId) => {
-            queryClient.setQueryData([PROJECTS_QUERY_KEY], (oldProjects: Project[]) => {
-                return oldProjects.filter(project => project.id !== deletedProjectId)
+            queryClient.setQueryData([PROJECTS_QUERY_KEY], (oldProjects: Projects[]) => {
+                return oldProjects.filter(({project}) => project.id !== deletedProjectId)
             })
         },
         onError: (error) => {

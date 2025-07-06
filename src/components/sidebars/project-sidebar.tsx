@@ -67,8 +67,8 @@ const sidebarItems: ISidebarItem[] = [
 
 export function ProjectSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
-        <Sidebar collapsible="icon" side="right" {...props}>
-            <SidebarHeader className="overflow-x-hidden">
+        <Sidebar collapsible="icon" side="right" variant="floating" className="h-max w-52" {...props}>
+            <SidebarHeader>
                 <SidebarMenu>
                     {
                         sidebarItems.map((item) => (
@@ -82,7 +82,7 @@ export function ProjectSidebar({ ...props }: React.ComponentProps<typeof Sidebar
                             </SidebarMenuItem>
                         ))
                     }
-                    
+
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarRail />

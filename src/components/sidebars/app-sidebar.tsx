@@ -13,13 +13,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from "@/providers/sidebar-provider"
 import { TeamSwitcher } from "./team-switcher"
 import { NavProjects } from "./nav-projects"
 import { NavUser } from "./nav-user"
 import { SearchForm } from "./search-form"
-import { NewProjectModal } from "@/components/projects-modals/create-project"
+import { NewProjectModal } from "@/components/modals/projects/create-project"
 import { useState } from "react"
 
 // This is sample data.
@@ -78,8 +77,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavUser />          
         </div>
       </SidebarFooter>
-      <SidebarRail />
-      
     </Sidebar>
   )
 }

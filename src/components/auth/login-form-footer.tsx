@@ -1,4 +1,4 @@
-import { supabase } from "@/providers/supabase"
+import { supabase } from "@/supabase/supabase"
 import { Button } from "@/components/ui/button"
 import type { Provider } from "@supabase/supabase-js"
 

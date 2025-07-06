@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { useProjects } from "@/hooks/use-projects"
+import { useProjects } from "@/hooks/projects/use-projects"
 
 interface IProps {
     open: boolean

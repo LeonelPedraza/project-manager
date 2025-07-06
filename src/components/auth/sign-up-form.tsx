@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { supabase } from "@/providers/supabase";
+import { supabase } from "@/supabase/supabase";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

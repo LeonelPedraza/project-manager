@@ -26,7 +26,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/providers/sidebar-provider"
-import { useNavigate } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { useUser } from "@/hooks/use-user"
 import { ThemeSwitcher } from "./theme-switcher"
 import { useSidebar } from "@/hooks/use-sidebar"
@@ -91,8 +91,10 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+                <Link to="/dashboard/profile" className="flex items-center gap-2">
+                  <BadgeCheck />
+                  Profile
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />

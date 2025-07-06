@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { Project } from "@/types/types";
+import type { Projects } from "@/types/types";
 
 
 interface GlobalState {
@@ -7,8 +7,8 @@ interface GlobalState {
     setLeftSideBarOpen: (open: boolean) => void
     rightSidebarOpen: boolean
     setRightSideBarOpen: (open: boolean) => void
-    selectedProject: Project | null
-    setSelectedProject: (project: Project) => void
+    selectedProject: Projects | null
+    setSelectedProject: (project: Projects) => void
 }
 
 const initialState: GlobalState = {

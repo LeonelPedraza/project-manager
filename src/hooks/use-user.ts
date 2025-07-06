@@ -1,6 +1,6 @@
 import type { User } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
-import { supabase } from "@/providers/supabase"
+import { supabase } from "@/supabase/supabase"
 
 interface IUser {
     username: string
@@ -43,6 +43,8 @@ export const useUser = () => {
     const logout = async () => {
         await supabase.auth.signOut()
     }
+
+    
 
     useEffect(() => {
         loadUserData()

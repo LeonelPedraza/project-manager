@@ -22,10 +22,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/providers/sidebar-provider"
-import { useProjects } from "@/hooks/use-projects"
-import type { Project } from "@/types/types"
-import { EditProjectModal } from "@/components/projects-modals/edit-project"
-import { DeleteProjectModal } from "@/components/projects-modals/delete-project"
+import { useProjects } from "@/hooks/projects/use-projects"
+import type { Project, Projects } from "@/types/types"
+import { EditProjectModal } from "@/components/modals/projects/edit-project"
+import { DeleteProjectModal } from "@/components/modals/projects/delete-project"
 import { useAppState } from "@/hooks/use-app-state"
 import { useSidebar } from "@/hooks/use-sidebar"
 
@@ -42,7 +42,7 @@ export function NavProjects() {
     setUpdateProjectModalOpen(true)
   }
 
-  const handleSelectProject = (project: Project) => {
+  const handleSelectProject = (project: Projects) => {
     setSelectedProject(project)
     setLeftSideBarOpen(false)
   }
@@ -66,14 +66,14 @@ export function NavProjects() {
         }
         {
           projects.map((item) => (
-            <SidebarMenuItem key={item.id} className="cursor-pointer">
-              <SidebarMenuButton asChild size='lg' onClick={() => handleSelectProject(item)} tooltip={item.name} isActive={item.id === selectedProject?.id} >
+            <SidebarMenuItem key={item.project.id} className="cursor-pointer">
+              <SidebarMenuButton asChild size='lg' onClick={() => handleSelectProject(item)} tooltip={item.project.name} isActive={item.project.id === selectedProject?.project.id} >
                 <Link to={`/dashboard/project`}>
                   <div className="h-full flex items-center gap-2">
-                    <img src={item.profiles.avatar_url} alt={`${item.profiles.username}'s avatar`} className="object-cover size-8 w-8 rounded-sm" />
+                    <img src={item.profile.avatar_url} alt={`${item.profile.username}'s avatar`} className="object-cover size-8 w-8 rounded-sm" /> 
                     <div className="flex flex-col gap-1">
-                      <span>{item.project_type}/{item.name}</span>
-                      <span className="text-xs text-muted-foreground">{item.profiles.username}</span>
+                      <span>{item.project.name}</span>
+                      <span className="text-xs text-muted-foreground">{item.profile.username}</span>
                     </div>
                   </div>
                 </Link>
@@ -90,7 +90,7 @@ export function NavProjects() {
                   side={isMobile ? "bottom" : "right"}
                   align={isMobile ? "end" : "start"}
                 >
-                  <DropdownMenuItem onClick={() => handleUpdateProject(item)}>
+                  <DropdownMenuItem onClick={() => handleUpdateProject(item.project)}>
                     <SquarePen className="text-muted-foreground" />
                     <span>Edit Project</span>
                   </DropdownMenuItem>
@@ -99,7 +99,7 @@ export function NavProjects() {
                     <span>Share Project</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DeleteProjectModal project={item} />
+                  <DeleteProjectModal project={item.project} />
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>

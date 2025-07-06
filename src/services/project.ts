@@ -1,25 +1,30 @@
-import { supabase } from "@/providers/supabase"
-import type { Project } from "@/types/types"
+import { supabase } from "@/supabase/supabase"
+import type { Project, Projects } from "@/types/types"
 
 
-export const getProjects = async (): Promise<Project[]> => {
+export const getProjects = async (): Promise<Projects[]> => {
     try {
+        const { data: { user } } = await supabase.auth.getUser()
         const { data, error } = await supabase
-            .from('projects')
+            .from('members')
             .select(`
-                id,
-                name,
-                description,
-                project_type,
-                favorite,
-                user_id,
-                profiles (id, username, avatar_url)
+                projects (id, name, description, project_type, favorite),
+                roles (name),
+                profiles (username, avatar_url)
             `)
-            .order('start_date', { ascending: false })
+            .eq('profile_id', user?.id)
+            .order('created_at', { ascending: false })
         if (error) {
             throw Error(error.message)
         }
-        return data as unknown as Project[]
+        const res = data.map(item => {
+            return {
+                project: item.projects,
+                role: item.roles,
+                profile: item.profiles
+            }
+        })
+        return res as unknown as Projects[]
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
@@ -31,26 +36,17 @@ export const getProjects = async (): Promise<Project[]> => {
 
 export const createProject = async ({ name, description, project_type }: Partial<Project>) => {
     try {
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from('projects')
             .insert({
                 name,
                 description,
                 project_type,
             })
-            .select(`
-                id,
-                name,
-                description,
-                project_type,
-                favorite,
-                user_id,
-                profiles (id, username, avatar_url)
-            `)
         if (error) {
             throw Error(error.message)
         }
-        return data[0]
+        return
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
@@ -66,13 +62,11 @@ export const updateProject = async ({ id, updateFields }: { id: string, updateFi
             .update(updateFields)
             .eq('id', id)
             .select(`
-                id,
-                name,
-                description,
-                project_type,
-                favorite,
-                user_id,
-                profiles (id, username, avatar_url)
+                id, 
+                name, 
+                description, 
+                project_type, 
+                favorite
             `)
         if (error) {
             throw Error(error.message)
