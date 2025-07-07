@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { useAppState } from "@/hooks/use-app-state"
 import type { Invitation } from "@/types/types"
 import {
     type ColumnDef,
@@ -27,11 +26,12 @@ import {
 import { MoreHorizontal } from "lucide-react"
 import { DeleteInvitationModal } from "../modals/members/delete-invitation"
 import { useMembers } from "@/hooks/members/use-member"
+import { useParams } from "react-router"
 
 export const InvitationssTable = () => {
 
-    const { selectedProject } = useAppState()
-    const { invitations: { data, isLoading } } = useMembers(selectedProject?.project.id || '')
+    const { projectId } = useParams()
+    const { invitations: { data, isLoading } } = useMembers(projectId)
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -69,7 +69,7 @@ export const InvitationssTable = () => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DeleteInvitationModal projectId={selectedProject?.project.id || ''} invitation={invitation} />
+                            <DeleteInvitationModal projectId={projectId ?? ''} invitation={invitation} />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 )

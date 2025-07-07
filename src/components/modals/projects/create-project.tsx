@@ -54,8 +54,7 @@ export const NewProjectModal: FC<IProps> = ({ open, onClose }) => {
         } catch (error) {
             console.error(error)
             toast.error("Error creating project")
-        }
-        
+        }        
     }
 
     const closeModal = () => {

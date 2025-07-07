@@ -8,7 +8,7 @@ export const getProjects = async (): Promise<Projects[]> => {
         const { data, error } = await supabase
             .from('members')
             .select(`
-                projects (id, name, description, project_type, favorite),
+                projects (id, name, description, project_type, favorite, owner:profiles(username, avatar_url)),
                 roles (name),
                 profiles (username, avatar_url)
             `)
@@ -36,9 +36,11 @@ export const getProjects = async (): Promise<Projects[]> => {
 
 export const createProject = async ({ name, description, project_type }: Partial<Project>) => {
     try {
+        const { data: { user } } = await supabase.auth.getUser()
         const { error } = await supabase
             .from('projects')
             .insert({
+                owner_id: user?.id,
                 name,
                 description,
                 project_type,

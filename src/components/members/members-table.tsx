@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { useAppState } from "@/hooks/use-app-state"
 import type { ProjectMember } from "@/types/types"
 import {
     type ColumnDef,
@@ -30,14 +29,15 @@ import { Input } from "@/components/ui/input"
 import { useMembers } from "@/hooks/members/use-member"
 import { DeleteMemberModal } from "../modals/members/delete-member"
 import { ChangeRoleModal } from "../modals/members/change-role"
+import { useParams } from "react-router"
 import { useUser } from "@/hooks/use-user"
 
 export const MembersTable = () => {
 
+    const { projectId } = useParams()
     const { user } = useUser()
 
-    const { selectedProject } = useAppState()
-    const { members: { data, isLoading } } = useMembers(selectedProject?.project.id || '')
+    const { members: { data, isLoading } } = useMembers(projectId)
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 

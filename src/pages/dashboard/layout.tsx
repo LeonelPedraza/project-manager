@@ -1,9 +1,7 @@
-import { useEffect } from "react";
 import { AppSidebar } from "@/components/sidebars/app-sidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Separator } from "@radix-ui/react-separator";
-import { Outlet, useNavigate } from "react-router";
-import { useUser } from "@/hooks/use-user";
+import { Outlet } from "react-router";
 import { ProjectSidebar } from "@/components/sidebars/project-sidebar";
 import { PanelLeftIcon, PanelRightIcon } from "lucide-react";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/providers/sidebar-provider";
@@ -11,16 +9,7 @@ import { useAppState } from "@/hooks/use-app-state";
 
 export default function DashboardLayout() {
 
-    const navigate = useNavigate()
-    const { userData } = useUser()
-
     const { leftSidebarOpen, setLeftSideBarOpen, rightSidebarOpen, setRightSideBarOpen, selectedProject } = useAppState()
-
-    useEffect(() => {
-        if (!userData) {
-            navigate('/', { replace: true })
-        }
-    }, [userData, navigate])
 
     return (
         <>

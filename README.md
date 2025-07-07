@@ -13,7 +13,7 @@ This is a project management tool built with Next.js, React, and Tailwind CSS. I
 
 ## TODO
 
-- Change project manager to url
-- Fix member deletion
-- Add owner to projects
+- ✔️ Change project manager to url
+- ✔️ Add owner to projects
+- ✔️ Fix member deletion
 - Add role control

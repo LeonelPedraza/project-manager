@@ -4,7 +4,7 @@ export default function Project() {
     const { selectedProject } = useAppState()
     return (
         <div>
-            Project {selectedProject?.project?.name}
+            {selectedProject?.project?.name}
         </div>
     )
 }

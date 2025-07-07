@@ -6,7 +6,7 @@ import OAuthCallback from './pages/auth/oauth-callback'
 import ConfirmEmail from './pages/auth/confirm-email'
 import DashboardLayout from './pages/dashboard/layout'
 import Home from './pages/dashboard/home'
-import Project from './pages/dashboard/project'
+import Project from './pages/dashboard/views/overview'
 import MembersView from './pages/dashboard/views/members-view'
 import { Profile } from './pages/dashboard/views/profile'
 
@@ -22,8 +22,10 @@ function App() {
         <Route path='dashboard' element={<DashboardLayout />}>
           <Route index element={<Home />} />
           <Route path='profile' element={<Profile />} />
-          <Route path='project' element={<Project />} />
-          <Route path='members' element={<MembersView />} />
+          <Route path=":projectId">
+            <Route index element={<Project />} />
+            <Route path='members' element={<MembersView />} />          
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

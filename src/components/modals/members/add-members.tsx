@@ -18,8 +18,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useRoles } from "@/hooks/roles/use-roles"
-import { useAppState } from "@/hooks/use-app-state"
 import { useMembers } from "@/hooks/members/use-member"
+import { useParams } from "react-router"
 
 interface IProps {
     open: boolean
@@ -28,9 +28,9 @@ interface IProps {
 
 export const AddMemberModal: FC<IProps> = ({ open, onClose }) => {
 
-    const { selectedProject } = useAppState()
+    const { projectId } = useParams()
 
-    const { addMember } = useMembers(selectedProject?.project.id || '')
+    const { addMember } = useMembers(projectId)
     const { roles } = useRoles()
 
     const formSchema = z.object({
@@ -54,7 +54,7 @@ export const AddMemberModal: FC<IProps> = ({ open, onClose }) => {
                 return
             }
             addMember.mutate({
-                project_id: selectedProject?.project.id || '',
+                project_id: projectId ?? '',
                 invited_email: data.email,
                 role_id: selectedRole.id
             })

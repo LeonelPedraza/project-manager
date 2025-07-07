@@ -17,8 +17,8 @@ import {
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useRoles } from "@/hooks/roles/use-roles"
-import { useAppState } from "@/hooks/use-app-state"
 import { useMembers } from "@/hooks/members/use-member"
+import { useParams } from "react-router"
 
 interface IProps {
     memberId: string
@@ -28,9 +28,9 @@ interface IProps {
 
 export const ChangeRoleModal: FC<IProps> = ({ memberId, open, onClose }) => {
 
-    const { selectedProject } = useAppState()
+    const { projectId } = useParams()
 
-    const { changeMemberRole } = useMembers(selectedProject?.project.id || '')
+    const { changeMemberRole } = useMembers(projectId)
     const { roles } = useRoles()
 
     const formSchema = z.object({

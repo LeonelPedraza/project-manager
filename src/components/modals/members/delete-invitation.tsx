@@ -17,7 +17,6 @@ import type { Invitation } from "@/types/types"
 import { useMembers } from "@/hooks/members/use-member"
 
 interface IProps {
-    projectId: string
     invitation: Invitation | null
 }
 

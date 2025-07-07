@@ -14,6 +14,7 @@ import { Trash2 } from "lucide-react"
 import type { FC } from "react"
 import { toast } from "sonner"
 import { useMembers } from "@/hooks/members/use-member"
+import { useParams } from "react-router"
 
 interface IProps {
     memberId: string
@@ -22,7 +23,9 @@ interface IProps {
 
 export const DeleteMemberModal: FC<IProps> = ({ memberId, memberName }) => {
 
-    const { deleteMember } = useMembers(memberId)
+    const { projectId } = useParams()
+
+    const { deleteMember } = useMembers(projectId)
 
     const handleDelete = async () => {
         try {

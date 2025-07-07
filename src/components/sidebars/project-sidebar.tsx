@@ -7,8 +7,20 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/providers/sidebar-provider"
-import { Link } from "react-router"
-import { Calendar, Database, Download, Folder, History, LayoutList, Settings, StickyNote, UsersRound, type LucideIcon } from "lucide-react"
+import { Link, useParams } from "react-router"
+import { 
+    House,
+    Calendar, 
+    Database, 
+    Download, 
+    Folder, 
+    History, 
+    LayoutList, 
+    Settings, 
+    StickyNote, 
+    UsersRound, 
+    type LucideIcon 
+} from "lucide-react"
 
 interface ISidebarItem {
     icon: LucideIcon
@@ -18,54 +30,60 @@ interface ISidebarItem {
 
 const sidebarItems: ISidebarItem[] = [
     {
+        icon: House,
+        title: "Overview",
+        to: "",
+    },
+    {
         icon: Folder,
         title: "Documents",
-        to: "/",
+        to: "documents",
     },
     {
         icon: Database,
         title: "Data Base",
-        to: "/",
+        to: "database",
     },
     {
         icon: Calendar,
         title: "Calendar",
-        to: "/",
+        to: "calendar",
     },
     {
         icon: UsersRound,
         title: "Team",
-        to: "/dashboard/members",
+        to: "members",
     },
     {
         icon: LayoutList,
         title: "Tasks",
-        to: "/",
+        to: "tasks",
     },
     {
         icon: StickyNote,
         title: "Notes",
-        to: "/",
+        to: "notes",
     },
     {
         icon: History,
         title: "History",
-        to: "/",
+        to: "history",
     },
     {
         icon: Settings,
         title: "Settings",
-        to: "/",
+        to: "settings",
     },
     {
         icon: Download,
         title: "Export",
-        to: "/",
+        to: "export",
     },
 ]
 
 
 export function ProjectSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { projectId } = useParams()
     return (
         <Sidebar collapsible="icon" side="right" variant="floating" className="h-max w-52" {...props}>
             <SidebarHeader>
@@ -74,7 +92,7 @@ export function ProjectSidebar({ ...props }: React.ComponentProps<typeof Sidebar
                         sidebarItems.map((item) => (
                             <SidebarMenuItem key={item.title}>
                                 <SidebarMenuButton asChild tooltip={item.title}>
-                                    <Link to={item.to}>
+                                    <Link to={`${projectId}/${item.to}`}>
                                         <item.icon />
                                         <span>{item.title}</span>
                                     </Link>

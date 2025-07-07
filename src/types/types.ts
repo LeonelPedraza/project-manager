@@ -30,11 +30,12 @@ export interface Invitation {
 }
 
 export interface Project {
+    id?: string
+    owner: Profile
     name: string
     description: string
     project_type: ProjectType
     favorite?: boolean
-    id?: string
 }
 
 export interface Projects {

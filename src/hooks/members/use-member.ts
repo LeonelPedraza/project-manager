@@ -81,7 +81,7 @@ export const useMembers = (projectId?: string | null) => {
     const deleteInvitation = useMutation({
         mutationFn: remove_invitation,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [INVITATIONS_QUERY_KEY, projectId] })
+            queryClient.invalidateQueries({ queryKey: [PROJECT_MEMBERS_QUERY_KEY, projectId] })
         },
         onError: (error) => {
             console.error('Error removing invitation:', error.message)

@@ -68,12 +68,12 @@ export function NavProjects() {
           projects.map((item) => (
             <SidebarMenuItem key={item.project.id} className="cursor-pointer">
               <SidebarMenuButton asChild size='lg' onClick={() => handleSelectProject(item)} tooltip={item.project.name} isActive={item.project.id === selectedProject?.project.id} >
-                <Link to={`/dashboard/project`}>
+                <Link to={`/dashboard/${item.project.id}`}>
                   <div className="h-full flex items-center gap-2">
-                    <img src={item.profile.avatar_url} alt={`${item.profile.username}'s avatar`} className="object-cover size-8 w-8 rounded-sm" /> 
+                    <img src={item.project.owner.avatar_url} alt={`${item.project.owner.username}'s avatar`} className="object-cover size-8 w-8 rounded-sm" /> 
                     <div className="flex flex-col gap-1">
                       <span>{item.project.name}</span>
-                      <span className="text-xs text-muted-foreground">{item.profile.username}</span>
+                      <span className="text-xs text-muted-foreground">{item.project.owner.username}</span>
                     </div>
                   </div>
                 </Link>
