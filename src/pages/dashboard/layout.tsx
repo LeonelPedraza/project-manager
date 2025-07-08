@@ -1,15 +1,21 @@
 import { AppSidebar } from "@/components/sidebars/app-sidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Separator } from "@radix-ui/react-separator";
-import { Outlet, useParams } from "react-router";
-import { PanelLeftIcon, PanelRightIcon } from "lucide-react";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/providers/sidebar-provider";
+import { Link, Outlet, useParams } from "react-router";
+import { PanelLeftIcon, PanelRightIcon, Menu } from "lucide-react";
+import { SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/providers/sidebar-provider";
 import { useAppState } from "@/hooks/use-app-state";
 import { ProjectProvider } from "@/providers/project-provider";
 import { ProjectSidebar } from "@/components/sidebars/project-sidebar";
+import {
+    Drawer,
+    DrawerContent,
+    DrawerTrigger,
+    DrawerClose
+} from "@/components/ui/drawer"
+import { sidebarItems } from "@/lib/sidebar-items"
 
 export default function DashboardLayout() {
-    
+
     const { projectId } = useParams()
     const { leftSidebarOpen, setLeftSideBarOpen, rightSidebarOpen, setRightSideBarOpen } = useAppState()
 
@@ -19,33 +25,55 @@ export default function DashboardLayout() {
                 <AppSidebar />
                 <SidebarInset>
                     <header className="flex h-16 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-                        <div className="flex items-center gap-2 px-2 md:px-8">
-                            <SidebarTrigger onClick={() => setLeftSideBarOpen(!leftSidebarOpen)} className="-ml-1">
-                                <PanelLeftIcon />
-                            </SidebarTrigger>
-                            <SidebarTrigger onClick={() => setRightSideBarOpen(!rightSidebarOpen)} className="-ml-1">
-                                <PanelRightIcon />
-                            </SidebarTrigger>
-                            <Separator
-                                orientation="vertical"
-                                className="mr-2 data-[orientation=vertical]:h-4"
-                            />
-                            <Breadcrumb>
-                                <BreadcrumbList>
-                                    <BreadcrumbItem className="hidden md:block">
-                                        <BreadcrumbLink href="#">
-                                            Building Your Application
-                                        </BreadcrumbLink>
-                                    </BreadcrumbItem>
-                                    <BreadcrumbSeparator className="hidden md:block" />
-                                    <BreadcrumbItem>
-                                        <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                                    </BreadcrumbItem>
-                                </BreadcrumbList>
-                            </Breadcrumb>
+                        <div className="flex w-full justify-between items-center gap-2 px-4 md:px-8">
+                            <div className="flex items-center">
+                                <SidebarTrigger onClick={() => setLeftSideBarOpen(!leftSidebarOpen)} className="-ml-1">
+                                    <PanelLeftIcon />
+                                </SidebarTrigger>
+                                <SidebarTrigger onClick={() => setRightSideBarOpen(!rightSidebarOpen)} className="hidden md:inline-flex -ml-1 mr-2">
+                                    <PanelRightIcon />
+                                </SidebarTrigger>
+                                <Breadcrumb>
+                                    <BreadcrumbList>
+                                        <BreadcrumbItem className="hidden md:block">
+                                            <BreadcrumbLink href="#">
+                                                Building Your Application
+                                            </BreadcrumbLink>
+                                        </BreadcrumbItem>
+                                        <BreadcrumbSeparator className="hidden md:block" />
+                                        <BreadcrumbItem>
+                                            <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                                        </BreadcrumbItem>
+                                    </BreadcrumbList>
+                                </Breadcrumb>
+                            </div>
+                            {/* Mobile Sidebar */}
+                            <Drawer>
+                                <DrawerTrigger className="md:hidden">
+                                    <Menu />
+                                </DrawerTrigger>
+                                <DrawerContent>
+                                    <SidebarMenu className="px-4 pt-8 pb-16">
+                                        {
+                                            sidebarItems.map((item) => (
+                                                <SidebarMenuItem key={item.title}>
+                                                    <SidebarMenuButton asChild tooltip={item.title}>
+                                                        <Link to={`${projectId}/${item.to}`}>
+                                                            <DrawerClose className="flex gap-4 text-white/70">
+                                                                <item.icon size={20} />
+                                                                <span>{item.title}</span>
+                                                            </DrawerClose>
+                                                        </Link>
+                                                    </SidebarMenuButton>
+                                                </SidebarMenuItem>
+                                            ))
+                                        }
+                                    </SidebarMenu>
+                                </DrawerContent>
+                            </Drawer>
                         </div>
                     </header>
-                    <div className="flex-col gap-4 py-4 px-2 md:px-8">
+                    <div className="flex-col gap-4 py-4 px-4 md:px-8">
                         <Outlet />
                     </div>
                 </SidebarInset>

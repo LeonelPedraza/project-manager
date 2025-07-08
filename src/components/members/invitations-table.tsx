@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { Invitation } from "@/types/types"
+import { useParams } from "react-router"
 import {
     type ColumnDef,
     flexRender,
@@ -24,9 +24,11 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
+
+import type { Invitation } from "@/types/types"
 import { DeleteInvitationModal } from "../modals/members/delete-invitation"
 import { useMembers } from "@/hooks/members/use-member"
-import { useParams } from "react-router"
+import { AddMember } from "@/components/members/add-member"
 
 export const InvitationssTable = () => {
 
@@ -69,7 +71,7 @@ export const InvitationssTable = () => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DeleteInvitationModal projectId={projectId ?? ''} invitation={invitation} />
+                            <DeleteInvitationModal invitation={invitation} />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 )
@@ -91,15 +93,16 @@ export const InvitationssTable = () => {
     return (
         <>
             <div className="flex flex-col md:flex-row w-full justify-between items-center gap-4">
-                <div className="flex items-center py-4 w-full">
+                <div className="flex items-center justify-between py-4 w-full">
                     <Input
-                        placeholder="Filter members..."
-                        value={(table.getColumn("username")?.getFilterValue() as string) ?? ""}
+                        placeholder="Find invited user..."
+                        value={(table.getColumn("invited_email")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
-                            table.getColumn("username")?.setFilterValue(event.target.value)
+                            table.getColumn("invited_email")?.setFilterValue(event.target.value)
                         }
                         className="max-w-sm"
                     />
+                    <AddMember />
                 </div>
             </div>
             <div className="rounded-md border">

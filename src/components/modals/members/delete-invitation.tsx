@@ -1,3 +1,5 @@
+import type { FC } from "react"
+import { useParams } from "react-router"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -10,9 +12,9 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { Trash2 } from "lucide-react"
-import type { FC } from "react"
 import { toast } from "sonner"
+import { Trash2 } from "lucide-react"
+
 import type { Invitation } from "@/types/types"
 import { useMembers } from "@/hooks/members/use-member"
 
@@ -20,8 +22,9 @@ interface IProps {
     invitation: Invitation | null
 }
 
-export const DeleteInvitationModal: FC<IProps> = ({ projectId, invitation }) => {
+export const DeleteInvitationModal: FC<IProps> = ({ invitation }) => {
 
+    const { projectId } = useParams()
     const { deleteInvitation } = useMembers(projectId)
 
     const handleDelete = async () => {

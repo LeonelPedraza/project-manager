@@ -27,11 +27,12 @@ import {
 import { MoreHorizontal } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { useMembers } from "@/hooks/members/use-member"
-import { DeleteMemberModal } from "../modals/members/delete-member"
 import { ChangeRoleModal } from "../modals/members/change-role"
 import { useParams } from "react-router"
 import { useUser } from "@/hooks/use-user"
 import { useSelectedProject } from "@/hooks/use-selected-project"
+import { DeleteMemberModal } from "../modals/members/delete-member"
+import { AddMember } from "@/components/members/add-member"
 
 export const MembersTable = () => {
 
@@ -122,15 +123,16 @@ export const MembersTable = () => {
     return (
         <>
             <div className="flex flex-col md:flex-row w-full justify-between items-center gap-4">
-                <div className="flex items-center py-4 w-full">
+                <div className="flex items-center justify-between py-4 w-full">
                     <Input
-                        placeholder="Filter members..."
+                        placeholder="Find a member..."
                         value={(table.getColumn("username")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
                             table.getColumn("username")?.setFilterValue(event.target.value)
                         }
                         className="max-w-sm"
                     />
+                    <AddMember />
                 </div>
             </div>
             <div className="max-w-dvw overflow-x-auto">

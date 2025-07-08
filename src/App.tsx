@@ -6,9 +6,9 @@ import OAuthCallback from './pages/auth/oauth-callback'
 import ConfirmEmail from './pages/auth/confirm-email'
 import DashboardLayout from './pages/dashboard/layout'
 import Home from './pages/dashboard/home'
-import Overview from './pages/project/views/overview'
-import MembersView from './pages/project/views/members-view'
-import Profile from './pages/project/views/profile'
+import Overview from './pages/dashboard/project/overview'
+import MembersView from './pages/dashboard/project/views/members-view'
+import Profile from './pages/dashboard/project/views/profile'
 
 function App() {
 
