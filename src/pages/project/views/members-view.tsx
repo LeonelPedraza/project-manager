@@ -13,7 +13,7 @@ export default function MembersView() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex flex-col md:flex-row w-full justify-between items-center gap-4">
+            <div className="flex justify-between items-center gap-4">  
                 <h1 className="text-2xl">Team members</h1>
                 <div className="flex gap-2">
                     <Button variant="outline" onClick={() => setAddMemeberModalOpen(true)}>

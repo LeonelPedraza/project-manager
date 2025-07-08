@@ -40,7 +40,6 @@ export interface Project {
 
 export interface Projects {
     project: Project
-    role: Role
     profile: Profile
 }
 

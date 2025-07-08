@@ -9,7 +9,6 @@ export const getProjects = async (): Promise<Projects[]> => {
             .from('members')
             .select(`
                 projects (id, name, description, project_type, favorite, owner:profiles(username, avatar_url)),
-                roles (name),
                 profiles (username, avatar_url)
             `)
             .eq('profile_id', user?.id)
@@ -20,7 +19,6 @@ export const getProjects = async (): Promise<Projects[]> => {
         const res = data.map(item => {
             return {
                 project: item.projects,
-                role: item.roles,
                 profile: item.profiles
             }
         })

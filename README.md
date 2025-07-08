@@ -16,4 +16,6 @@ This is a project management tool built with Next.js, React, and Tailwind CSS. I
 - ✔️ Change project manager to url
 - ✔️ Add owner to projects
 - ✔️ Fix member deletion
-- Add role control
+- ✔️ Add role control
+
+- Cambiar menu lateral por uno igual al de supabase antes de seguir con las optimizaciones.

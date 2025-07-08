@@ -23,16 +23,18 @@ import {
   SidebarMenuItem,
 } from "@/providers/sidebar-provider"
 import { useProjects } from "@/hooks/projects/use-projects"
-import type { Project, Projects } from "@/types/types"
+import type { Project } from "@/types/types"
 import { EditProjectModal } from "@/components/modals/projects/edit-project"
 import { DeleteProjectModal } from "@/components/modals/projects/delete-project"
 import { useAppState } from "@/hooks/use-app-state"
 import { useSidebar } from "@/hooks/use-sidebar"
+import { useSelectedProject } from "@/hooks/use-selected-project"
 
 export function NavProjects() {
   const { isMobile, open } = useSidebar()
+  const { selectedProject } = useSelectedProject()
   const { projects, isLoading = true } = useProjects()
-  const { selectedProject, setSelectedProject, setLeftSideBarOpen } = useAppState()
+  const { setLeftSideBarOpen } = useAppState()
 
   const [projectToUpdate, setProjectToUpdate] = useState<Project | null>(null)
   const [updateProjectModalOpen, setUpdateProjectModalOpen] = useState(false)
@@ -42,8 +44,7 @@ export function NavProjects() {
     setUpdateProjectModalOpen(true)
   }
 
-  const handleSelectProject = (project: Projects) => {
-    setSelectedProject(project)
+  const handleSelectProject = () => {
     setLeftSideBarOpen(false)
   }
 
@@ -66,8 +67,8 @@ export function NavProjects() {
         }
         {
           projects.map((item) => (
-            <SidebarMenuItem key={item.project.id} className="cursor-pointer">
-              <SidebarMenuButton asChild size='lg' onClick={() => handleSelectProject(item)} tooltip={item.project.name} isActive={item.project.id === selectedProject?.project.id} >
+            <SidebarMenuItem key={item.project.id} className="cursor-pointer group-data-[collapsible=icon]:outline-3 group-data-[collapsible=icon]:outline-blue-600 overflow-hidden rounded-md">
+              <SidebarMenuButton asChild size='lg' onClick={() => handleSelectProject()} tooltip={item.project.name} isActive={item.project.id === selectedProject?.id} >
                 <Link to={`/dashboard/${item.project.id}`}>
                   <div className="h-full flex items-center gap-2">
                     <img src={item.project.owner.avatar_url} alt={`${item.project.owner.username}'s avatar`} className="object-cover size-8 w-8 rounded-sm" /> 

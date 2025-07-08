@@ -31,11 +31,13 @@ import { DeleteMemberModal } from "../modals/members/delete-member"
 import { ChangeRoleModal } from "../modals/members/change-role"
 import { useParams } from "react-router"
 import { useUser } from "@/hooks/use-user"
+import { useSelectedProject } from "@/hooks/use-selected-project"
 
 export const MembersTable = () => {
 
     const { projectId } = useParams()
     const { user } = useUser()
+    const { selectedProjectPermissions } = useSelectedProject()
 
     const { members: { data, isLoading } } = useMembers(projectId)
 
@@ -70,8 +72,9 @@ export const MembersTable = () => {
             id: "actions",
             cell: ({ row }) => {
                 const member = row.original
-                if (user?.id !== member.profiles.id) {
-
+                const canUpdate = selectedProjectPermissions.has('members:update')
+                const canDelete = selectedProjectPermissions.has('members:delete')
+                if (user?.id !== member.profiles.id && canUpdate && canDelete) {
                     return (
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -81,13 +84,22 @@ export const MembersTable = () => {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem
-                                    onClick={() => handleChangeRole(member.id ?? '')}
-                                >
-                                    Change role
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DeleteMemberModal memberId={member.id ?? ''} memberName={member.profiles.username ?? ''} />
+                                {
+                                    canUpdate &&
+                                    <DropdownMenuItem
+                                        onClick={() => handleChangeRole(member.id ?? '')}
+                                    >
+                                        Change role
+                                    </DropdownMenuItem>
+                                }
+                                {
+                                    canUpdate && canDelete &&
+                                    <DropdownMenuSeparator />
+                                }
+                                {
+                                    canDelete &&
+                                    <DeleteMemberModal memberId={member.id ?? ''} memberName={member.profiles.username ?? ''} />
+                                }
                             </DropdownMenuContent>
                         </DropdownMenu>
                     )
@@ -121,7 +133,7 @@ export const MembersTable = () => {
                     />
                 </div>
             </div>
-            <div className="rounded-md border">
+            <div className="max-w-dvw overflow-x-auto">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

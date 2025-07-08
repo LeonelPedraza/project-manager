@@ -1,23 +1,25 @@
 import { AppSidebar } from "@/components/sidebars/app-sidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Separator } from "@radix-ui/react-separator";
-import { Outlet } from "react-router";
-import { ProjectSidebar } from "@/components/sidebars/project-sidebar";
+import { Outlet, useParams } from "react-router";
 import { PanelLeftIcon, PanelRightIcon } from "lucide-react";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/providers/sidebar-provider";
 import { useAppState } from "@/hooks/use-app-state";
+import { ProjectProvider } from "@/providers/project-provider";
+import { ProjectSidebar } from "@/components/sidebars/project-sidebar";
 
 export default function DashboardLayout() {
-
-    const { leftSidebarOpen, setLeftSideBarOpen, rightSidebarOpen, setRightSideBarOpen, selectedProject } = useAppState()
+    
+    const { projectId } = useParams()
+    const { leftSidebarOpen, setLeftSideBarOpen, rightSidebarOpen, setRightSideBarOpen } = useAppState()
 
     return (
-        <>
+        <ProjectProvider projectId={projectId ?? ''}>
             <SidebarProvider open={leftSidebarOpen}>
                 <AppSidebar />
                 <SidebarInset>
                     <header className="flex h-16 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-                        <div className="flex items-center gap-2 px-8">
+                        <div className="flex items-center gap-2 px-2 md:px-8">
                             <SidebarTrigger onClick={() => setLeftSideBarOpen(!leftSidebarOpen)} className="-ml-1">
                                 <PanelLeftIcon />
                             </SidebarTrigger>
@@ -43,19 +45,17 @@ export default function DashboardLayout() {
                             </Breadcrumb>
                         </div>
                     </header>
-                    <div className="flex flex-1 flex-col gap-4 py-4 px-8">
+                    <div className="flex-col gap-4 py-4 px-2 md:px-8">
                         <Outlet />
                     </div>
                 </SidebarInset>
                 {
-                    selectedProject &&
+                    projectId &&
                     <SidebarProvider open={rightSidebarOpen} className="static w-max">
                         <ProjectSidebar />
                     </SidebarProvider>
                 }
             </SidebarProvider>
-
-
-        </>
+        </ProjectProvider>
     )
 }

@@ -8,11 +8,12 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { useMembers } from "@/hooks/members/use-member"
+import { useUserInvitations } from "@/hooks/members/use-user-invitations"
 
-export const Profile = () => {
+export default function Profile() {
 
-    const { userInvitations: {data}, acceptInvitation } = useMembers()
+    const { userInvitations: {data}, acceptInvitation } = useUserInvitations()
+    
     return (
         <div>
             <div>
