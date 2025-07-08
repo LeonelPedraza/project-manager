@@ -48,10 +48,11 @@ export const useUser = () => {
         const { error } = await supabase.auth.signOut();
         if (error) {
             console.error('Error logging out:', error.message);
-            // Aquí podrías manejar el error de forma más visible para el usuario
         } else {
-            queryClient.setQueryData([USER_QUERY_KEY], { user: null, profile: null }); // Actualización optimista
-            queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEY] }); // Asegurar revalidación
+          queryClient.setQueryData([USER_QUERY_KEY], {
+            user: null,
+            profile: null,
+          }); // Actualización optimista
         }
     };
 

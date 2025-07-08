@@ -5,7 +5,6 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    SidebarRail,
 } from "@/providers/sidebar-provider"
 import { Link, useParams } from "react-router"
 import { sidebarItems } from "@/lib/sidebar-items"
@@ -14,13 +13,19 @@ import { sidebarItems } from "@/lib/sidebar-items"
 export function ProjectSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { projectId } = useParams()
     return (
-        <Sidebar collapsible="icon" side="right" variant="floating" className="h-max w-52" {...props}>
+        <Sidebar 
+            collapsible="icon" 
+            side="right" 
+            variant="floating" 
+            className="h-max duration-100" 
+            {...props}
+        >
             <SidebarHeader>
                 <SidebarMenu>
                     {
                         sidebarItems.map((item) => (
                             <SidebarMenuItem key={item.title}>
-                                <SidebarMenuButton asChild tooltip={item.title}>
+                                <SidebarMenuButton asChild>
                                     <Link to={`${projectId}/${item.to}`}>
                                         <item.icon />
                                         <span>{item.title}</span>
@@ -31,7 +36,6 @@ export function ProjectSidebar({ ...props }: React.ComponentProps<typeof Sidebar
                     }
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarRail />
         </Sidebar>
     )
 }

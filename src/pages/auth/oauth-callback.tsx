@@ -1,3 +1,4 @@
+import { LoadingAccount } from "@/components/ui/loading-account";
 import { supabase } from "@/supabase/supabase";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -52,8 +53,6 @@ export default function OAuthCallback() {
     }, [navigate]);
 
     return (
-        <div className="w-full flex justify-center">
-            <p className="text-xl mt-8">Processing authentication, please wait...</p>
-        </div>
+        <LoadingAccount />
     );
 }

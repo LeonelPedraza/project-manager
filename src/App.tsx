@@ -10,18 +10,23 @@ import Overview from './pages/dashboard/project/overview'
 import MembersView from './pages/dashboard/project/views/members-view'
 import Profile from './pages/dashboard/project/views/profile'
 import { useUser } from './hooks/use-user'
+import { LoadingAccount } from './components/ui/loading-account'
 
 function App() {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
+
+  if (isLoading) {
+    return <LoadingAccount />;
+}
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={user ? <Navigate to="/dashboard" /> : <SignInPage />} />
+        <Route index element={<SignInPage />} />
         <Route path='sign-up' element={<SignUpPage />} />
         <Route path='confirm-email' element={<ConfirmEmail />} />
         <Route path="auth/callback" element={<OAuthCallback />} />
-        <Route path='dashboard' element={<DashboardLayout />}>
+        <Route path='dashboard' element={user ? <DashboardLayout /> : <Navigate to="/" replace />}>
           <Route index element={<Home />} />
           <Route path='profile' element={<Profile />} />
           <Route path=":projectId">
