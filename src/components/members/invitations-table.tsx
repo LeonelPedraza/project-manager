@@ -16,7 +16,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -29,6 +28,7 @@ import type { Invitation } from "@/types/types"
 import { DeleteInvitationModal } from "../modals/members/delete-invitation"
 import { useMembers } from "@/hooks/members/use-member"
 import { AddMember } from "@/components/members/add-member"
+import { SearchInput } from "../ui/search-input"
 
 export const InvitationssTable = () => {
 
@@ -93,14 +93,13 @@ export const InvitationssTable = () => {
     return (
         <>
             <div className="flex flex-col md:flex-row w-full justify-between items-center gap-4">
-                <div className="flex items-center justify-between py-4 w-full">
-                    <Input
+                <div className="flex flex-col md:flex-row justify-between py-4 w-full gap-2">
+                    <SearchInput
                         placeholder="Find invited user..."
                         value={(table.getColumn("invited_email")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
                             table.getColumn("invited_email")?.setFilterValue(event.target.value)
                         }
-                        className="max-w-sm"
                     />
                     <AddMember />
                 </div>

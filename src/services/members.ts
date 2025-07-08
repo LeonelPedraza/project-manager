@@ -18,9 +18,8 @@ export const get_project_members = async (projectId: string): Promise<ProjectMem
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
-            throw error
         }
-        return []
+        throw new Error('An unknown error occurred during project members fetching.')
     }
 }
 
@@ -44,9 +43,8 @@ export const get_invitations = async ({projectId}: {projectId: string}): Promise
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
-            throw error
         }
-        return []
+        throw new Error('An unknown error occurred during invitations fetching.')
     }
 }
 
@@ -70,9 +68,8 @@ export const get_user_invitations = async (email: string): Promise<Invitation[]>
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
-            throw error
         }
-        return []
+        throw new Error('An unknown error occurred during user invitations fetching.')
     }
 }
 
@@ -95,8 +92,8 @@ export const invite_member = async ({ project_id, invited_email, role_id }: {pro
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
-            throw error
         }
+        throw new Error('An unknown error occurred during invitation sending.')
     }
 }
 
@@ -112,8 +109,8 @@ export const change_member_role = async ({ memberId, roleId }: { memberId: strin
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
-            throw error
         }
+        throw new Error('An unknown error occurred during change member role.')
     }
 }
 
@@ -129,8 +126,8 @@ export const delete_member = async ({ memberId }: { memberId: string }) => {
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
-            throw error
         }
+        throw new Error('An unknown error occurred during member deletion.')
     }
 }
 
@@ -151,8 +148,8 @@ export const accept_invitation = async ({ invitation_id, project_id }: { invitat
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
-            throw error
         }
+        throw new Error('An unknown error occurred during invitation acceptance.')
     }
 }
 
@@ -169,7 +166,7 @@ export const remove_invitation = async ({ id }: { id: string }) => {
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
-            throw error
         }
+        throw new Error('An unknown error occurred during invitation removal.')
     }
 }

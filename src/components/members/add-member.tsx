@@ -9,7 +9,7 @@ export const AddMember = () => {
 
     return (
         <>
-            <Button variant="outline" onClick={() => setAddMemeberModalOpen(true)}>
+            <Button variant="outline"  onClick={() => setAddMemeberModalOpen(true)}>
                 <UserRoundPlus />
                 Add member
             </Button>

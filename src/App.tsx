@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import './App.css'
 import SignInPage from './pages/auth/sign-in'
 import SignUpPage from './pages/auth/sign-up'
@@ -9,13 +9,15 @@ import Home from './pages/dashboard/home'
 import Overview from './pages/dashboard/project/overview'
 import MembersView from './pages/dashboard/project/views/members-view'
 import Profile from './pages/dashboard/project/views/profile'
+import { useUser } from './hooks/use-user'
 
 function App() {
+  const { user } = useUser();
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<SignInPage />} />
+        <Route index element={user ? <Navigate to="/dashboard" /> : <SignInPage />} />
         <Route path='sign-up' element={<SignUpPage />} />
         <Route path='confirm-email' element={<ConfirmEmail />} />
         <Route path="auth/callback" element={<OAuthCallback />} />

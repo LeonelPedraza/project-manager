@@ -35,7 +35,7 @@ export function NavUser() {
   const { isMobile } = useSidebar()
   const navigate = useNavigate()
 
-  const { userProfile, logout } = useUser()
+  const { profile, logout } = useUser()
 
   const handleLogout = async () => {
     logout()
@@ -52,11 +52,11 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={userProfile?.avatar_url} alt={userProfile?.username} />
+                <AvatarImage src={profile?.avatar_url} alt={profile?.username} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{userProfile?.username}</span>
+                <span className="truncate font-medium">{profile?.username}</span>
                 {/* <span className="truncate text-xs">{user.email}</span> */}
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -71,11 +71,11 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal flex items-center justify-between">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={userProfile?.avatar_url} alt={userProfile?.username} />
+                  <AvatarImage src={profile?.avatar_url} alt={profile?.username} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{userProfile?.username}</span>
+                  <span className="truncate font-medium">{profile?.username}</span>
                   {/* <span className="truncate text-xs">{user.email}</span> */}
                 </div>
               </div>

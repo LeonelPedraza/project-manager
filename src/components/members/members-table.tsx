@@ -25,7 +25,6 @@ import {
     DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
-import { Input } from "@/components/ui/input"
 import { useMembers } from "@/hooks/members/use-member"
 import { ChangeRoleModal } from "../modals/members/change-role"
 import { useParams } from "react-router"
@@ -33,6 +32,7 @@ import { useUser } from "@/hooks/use-user"
 import { useSelectedProject } from "@/hooks/use-selected-project"
 import { DeleteMemberModal } from "../modals/members/delete-member"
 import { AddMember } from "@/components/members/add-member"
+import { SearchInput } from "../ui/search-input"
 
 export const MembersTable = () => {
 
@@ -123,14 +123,11 @@ export const MembersTable = () => {
     return (
         <>
             <div className="flex flex-col md:flex-row w-full justify-between items-center gap-4">
-                <div className="flex items-center justify-between py-4 w-full">
-                    <Input
+                <div className="flex flex-col md:flex-row justify-between py-4 w-full gap-2">
+                    <SearchInput
                         placeholder="Find a member..."
                         value={(table.getColumn("username")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn("username")?.setFilterValue(event.target.value)
-                        }
-                        className="max-w-sm"
+                        onChange={(event) => table.getColumn("username")?.setFilterValue(event.target.value)}
                     />
                     <AddMember />
                 </div>

@@ -35,12 +35,10 @@ export function SignInForm({
     try {
       setLoading(true);
       const { email, password } = data;
-      const { data: res, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      console.log(res);
-      console.log(error?.message);
       if (error) throw Error(error.message);
       // Update this route to redirect to an authenticated route. The user already has an active session.
       navigate("/dashboard", { replace: true });
