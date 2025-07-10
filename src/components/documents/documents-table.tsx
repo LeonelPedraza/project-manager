@@ -1,14 +1,6 @@
 import { useState } from "react"
 import { useParams } from "react-router"
 import {
-    type ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    useReactTable,
-    type ColumnFiltersState,
-    getFilteredRowModel
-} from "@tanstack/react-table"
-import {
     Table,
     TableBody,
     TableCell,
@@ -16,71 +8,85 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
+    DropdownMenuItem,
+    DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal } from "lucide-react"
+import { flexRender, getCoreRowModel, getFilteredRowModel, useReactTable, type ColumnDef, type ColumnFiltersState } from "@tanstack/react-table"
+import { Folder as FolderIcon, MoreHorizontal } from "lucide-react"
+import { Button } from "../ui/button"
+import type { Folder } from "@/types/types"
+import { useFolder } from "@/hooks/documents/use-folder"
+import { useSelectedProject } from "@/hooks/use-selected-project"
 
-import type { Invitation } from "@/types/types"
-import { DeleteInvitationModal } from "../modals/members/delete-invitation"
-import { useMembers } from "@/hooks/members/use-member"
-import { SearchInput } from "../ui/search-input"
-import { AddMemberModal } from "../modals/members/add-members"
 
-export const InvitationssTable = () => {
+export const DocumentsTable = () => {
 
     const { projectId } = useParams()
-    const { invitations: { data, isLoading } } = useMembers(projectId)
+    const { selectedProjectPermissions } = useSelectedProject()
+    const { folders, isLoading } = useFolder(projectId ?? '')
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
-    const columns: ColumnDef<Invitation>[] = [
-        {
-            accessorKey: 'invited_email',
-            id: 'invited_email',
-            header: 'Email',
-        },
-        {
-            accessorKey: 'invited_by_user_id.username',
-            id: 'invited_by_user_id',
-            header: 'Invited by',
-        },
-        {
-            accessorKey: 'status',
-            id: 'status',
-            header: 'Status',
-        },
-        {
-            accessorKey: 'roles.name',
-            id: 'role',
-            header: 'Role',
-        },
+    const columns: ColumnDef<Folder>[] = [
+        { 
+            accessorKey: 'name', 
+            header: 'Name',
+            cell: ({ row }) => (
+                <div className="flex gap-4 flex-1">
+                    <FolderIcon />
+                    {row.getValue('name')}
+                </div>
+            )
+        }, 
         {
             id: "actions",
-            cell: ({ row }) => {
-                const invitation = row.original
-                return (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DeleteInvitationModal invitation={invitation} />
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                )
+            cell: () => {
+                const canUpdate = selectedProjectPermissions.has('documents:update')
+                const canDelete = selectedProjectPermissions.has('documents:delete')
+                if (canUpdate && canDelete) {
+                    return (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                    <span className="sr-only">Open menu</span>
+                                    <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                {
+                                    canUpdate &&
+                                    <DropdownMenuItem
+                                        onClick={() => {}}
+                                    >
+                                        Change role
+                                    </DropdownMenuItem>
+                                }
+                                {
+                                    canUpdate && canDelete &&
+                                    <DropdownMenuSeparator />
+                                }
+                                {
+                                    canDelete &&
+                                    <DropdownMenuItem
+                                        onClick={() => { }}
+                                    >
+                                        Change role
+                                    </DropdownMenuItem>
+                                }
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    )
+                }
             },
-          },
+        }
     ]
 
     const table = useReactTable({
-        data: data ?? [],
+        data: folders ?? [],
         columns,
         getCoreRowModel: getCoreRowModel(),
         onColumnFiltersChange: setColumnFilters,
@@ -91,20 +97,7 @@ export const InvitationssTable = () => {
     })
 
     return (
-        <>
-            <div className="flex flex-col md:flex-row w-full justify-between items-center gap-4">
-                <div className="flex flex-col md:flex-row justify-between py-4 w-full gap-2">
-                    <SearchInput
-                        placeholder="Find invited user..."
-                        value={(table.getColumn("invited_email")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn("invited_email")?.setFilterValue(event.target.value)
-                        }
-                    />
-                    <AddMemberModal />
-                </div>
-            </div>
-            <div className="rounded-md border">
+        <div className="max-w-dvw overflow-x-auto">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -158,6 +151,5 @@ export const InvitationssTable = () => {
                     </TableBody>
                 </Table>
             </div>
-        </>
     )
 }

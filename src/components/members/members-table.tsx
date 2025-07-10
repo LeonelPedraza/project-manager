@@ -31,8 +31,8 @@ import { useParams } from "react-router"
 import { useUser } from "@/hooks/use-user"
 import { useSelectedProject } from "@/hooks/use-selected-project"
 import { DeleteMemberModal } from "../modals/members/delete-member"
-import { AddMember } from "@/components/members/add-member"
 import { SearchInput } from "../ui/search-input"
+import { AddMemberModal } from "../modals/members/add-members"
 
 export const MembersTable = () => {
 
@@ -129,7 +129,7 @@ export const MembersTable = () => {
                         value={(table.getColumn("username")?.getFilterValue() as string) ?? ""}
                         onChange={(event) => table.getColumn("username")?.setFilterValue(event.target.value)}
                     />
-                    <AddMember />
+                    <AddMemberModal />
                 </div>
             </div>
             <div className="max-w-dvw overflow-x-auto">

@@ -43,4 +43,13 @@ export interface Projects {
     profile: Profile
 }
 
+export interface Folder {
+    id?: string
+    name: string
+    drive_folder_id: string
+    folder_url: string
+    parent_folder_id?: string
+    project_id: string
+}
+
 // Duplicate Role interface removed; merged above.

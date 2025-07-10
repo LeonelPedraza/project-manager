@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -12,7 +11,8 @@ import {
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogTitle
+    DialogTitle,
+    DialogTrigger
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,13 +20,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useRoles } from "@/hooks/roles/use-roles"
 import { useMembers } from "@/hooks/members/use-member"
 import { useParams } from "react-router"
+import { UserRoundPlus } from "lucide-react"
 
-interface IProps {
-    open: boolean
-    onClose: () => void
-}
 
-export const AddMemberModal: FC<IProps> = ({ open, onClose }) => {
+export const AddMemberModal = () => {
 
     const { projectId } = useParams()
 
@@ -58,23 +55,23 @@ export const AddMemberModal: FC<IProps> = ({ open, onClose }) => {
                 invited_email: data.email,
                 role_id: selectedRole.id
             })
-            onClose()
             reset()
             toast.success("Project created successfully")
         } catch (error) {
             console.error(error)
             toast.error("Error creating project")
         }
-        
-    }
 
-    const closeModal = () => {
-        onClose()
-        reset()
     }
 
     return (
-        <Dialog open={open} onOpenChange={(open) => !open && closeModal()}>
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button>
+                    <UserRoundPlus />
+                    Add member
+                </Button>
+            </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <DialogHeader>
@@ -103,7 +100,7 @@ export const AddMemberModal: FC<IProps> = ({ open, onClose }) => {
                             <Controller
                                 name="role"
                                 control={control}
-                                render={({field}) => (
+                                render={({ field }) => (
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
@@ -130,7 +127,7 @@ export const AddMemberModal: FC<IProps> = ({ open, onClose }) => {
                             <Button variant="outline" disabled={addMember.isPending}>Cancel</Button>
                         </DialogClose>
                         <Button type="submit" disabled={addMember.isPending} className="">
-                            {addMember.isPending ? 'Adding...' : 'Add'}  
+                            {addMember.isPending ? 'Adding...' : 'Add'}
                         </Button>
                     </DialogFooter>
                 </form>

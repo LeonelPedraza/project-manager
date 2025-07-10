@@ -6,11 +6,12 @@ import OAuthCallback from './pages/auth/oauth-callback'
 import ConfirmEmail from './pages/auth/confirm-email'
 import DashboardLayout from './pages/dashboard/layout'
 import Home from './pages/dashboard/home'
-import Overview from './pages/dashboard/project/overview'
-import MembersView from './pages/dashboard/project/views/members-view'
-import Profile from './pages/dashboard/project/views/profile'
-import { useUser } from './hooks/use-user'
 import { LoadingAccount } from './components/ui/loading-account'
+import { useUser } from './hooks/use-user'
+import Profile from './pages/dashboard/project-views/profile'
+import Overview from './pages/dashboard/project-views/overview'
+import Documents from './pages/dashboard/project-views/documents'
+import MembersView from './pages/dashboard/project-views/members-view'
 
 function App() {
   const { user, isLoading } = useUser();
@@ -31,7 +32,8 @@ function App() {
           <Route path='profile' element={<Profile />} />
           <Route path=":projectId">
             <Route index element={<Overview />} />
-            <Route path='members' element={<MembersView />} />    
+            <Route path='documents' element={<Documents />} />
+            <Route path='members' element={<MembersView />} />
           </Route>
         </Route>
       </Routes>
