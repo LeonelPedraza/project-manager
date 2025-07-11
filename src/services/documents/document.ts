@@ -1,21 +1,23 @@
 import { supabase } from "@/supabase/supabase"
-import type { Folder } from "@/types/types"
+import type { Document } from "@/types/types"
 
-export const getFolders = async ({projectId}: {projectId: string}) => {
+export const getDocuments = async ({projectId}: {projectId: string}) => {
     try {
         const { data, error } = await supabase
-            .from('folders')
+            .from('documents')
             .select(`
                 id,
                 name,
-                parent_folder_id,
-                project_id
+                file_type,
+                drive_file_id,
+                drive_file_url,
+                parent_folder_id
             `)
             .eq('project_id', projectId)
         if (error) {
             throw Error(error.message)
         }
-        return data as unknown as Folder[]
+        return data as unknown as Document[]
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
@@ -25,13 +27,14 @@ export const getFolders = async ({projectId}: {projectId: string}) => {
 }
 
 interface CreateDocument {
-    folderName: string
-    parentFolderId?: string
+    documentName: string
+    fileType: string
+    parentFolderId?: string | null
     projectId: string
 }
-export const createFolder = async (folderData: CreateDocument) => {
+export const createDocument = async (folderData: CreateDocument) => {
     try {
-        const { data, error } = await supabase.functions.invoke('create-folder', {
+        const { data, error } = await supabase.functions.invoke('create-document', {
             body: folderData
         })
         if (error) {

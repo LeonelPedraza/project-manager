@@ -44,12 +44,24 @@ export interface Projects {
 }
 
 export interface Folder {
-    id?: string
+    id: string
     name: string
     drive_folder_id: string
     folder_url: string
     parent_folder_id?: string
     project_id: string
+}
+
+type FileType = "doc" | "sheet" | "ppt";
+
+export interface Document {
+    id: string
+    name: string
+    file_type: FileType
+    drive_file_id: string
+    drive_file_url: string
+    parent_folder_id?: string
+    status: string
 }
 
 // Duplicate Role interface removed; merged above.

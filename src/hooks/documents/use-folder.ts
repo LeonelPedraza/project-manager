@@ -1,4 +1,4 @@
-import { createFolder, getFolders } from "@/services/documents"
+import { createFolder, getFolders } from "@/services/documents/folder"
 import type { Folder } from "@/types/types"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 

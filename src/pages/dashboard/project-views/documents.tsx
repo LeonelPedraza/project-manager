@@ -1,17 +1,11 @@
-import { AddDocument } from "@/components/documents/add-document";
+import { FileTree } from "@/components/documents/file-tree";
 import { UploadDocument } from "@/components/documents/upload-document";
+import { AddDocumentModal } from "@/components/modals/documets.tsx/add-document";
 import { AddFolderModal } from "@/components/modals/documets.tsx/add-folder";
 import { SearchInput } from "@/components/ui/search-input";
-import { useFolder } from "@/hooks/documents/use-folder";
-import { useParams } from "react-router";
 
 
-export default function Documents() {
-
-    const { projectId } = useParams()
-    const { folders, isLoading } = useFolder(projectId ?? '')
-
-    
+export default function Documents() {    
 
     return (
         <div className="flex flex-col gap-4">
@@ -26,17 +20,12 @@ export default function Documents() {
                 />
                 <div className="flex gap-2">
                     <AddFolderModal />
-                    <AddDocument />
+                    <AddDocumentModal />
                     <UploadDocument />
                 </div>
             </div>
             <div>
-                {
-                    isLoading ? 'Loading...' : ''
-                }
-                {
-                    JSON.stringify(folders)
-                }
+                <FileTree />
             </div>
         </div>
     )
