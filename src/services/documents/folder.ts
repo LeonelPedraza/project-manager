@@ -1,3 +1,4 @@
+import type { DriveItemType } from "@/lib/enums/drive-item-type"
 import { supabase } from "@/supabase/supabase"
 import type { Folder } from "@/types/types"
 
@@ -13,6 +14,7 @@ export const getFolders = async ({projectId}: {projectId: string}) => {
                 project_id
             `)
             .eq('project_id', projectId)
+            .order('name', { ascending: true })
         if (error) {
             throw Error(error.message)
         }
@@ -44,5 +46,55 @@ export const createFolder = async (folderData: CreateFolder) => {
             console.error(error.message)
         }
         throw new Error('An unknown error occurred during folder creating.')
+    }
+}
+
+interface RenameFolder {
+    newName: string
+    driveItemId: string
+    itemType: DriveItemType
+}
+export const rename_drive_item = async ({ newName, driveItemId, itemType }: RenameFolder) => {
+    try {
+        const { error } = await supabase.functions.invoke('rename-drive-item', {
+            body: {
+                newName,
+                driveItemId,
+                itemType
+            }
+        })
+        if (error) {
+            throw Error(error.message)
+        }
+        return itemType
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message)
+        }
+        throw new Error('An unknown error occurred during folder renaming.')
+    }
+}
+
+interface RemoveFolder {
+    driveItemId: string
+    itemType: DriveItemType
+}
+export const delete_drive_item = async ({ driveItemId, itemType }: RemoveFolder) => {
+    try {
+        const { error } = await supabase.functions.invoke('delete-drive-item', {
+            body: {
+                driveItemId,
+                itemType
+            }
+        })
+        if (error) {
+            throw Error(error.message)
+        }
+        return itemType
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message)
+        }
+        throw new Error('An unknown error occurred during folder renaming.')
     }
 }

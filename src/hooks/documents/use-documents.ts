@@ -2,7 +2,7 @@ import { createDocument, getDocuments } from "@/services/documents/document"
 import type { Document } from "@/types/types"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-const PROJECT_DOCUMETS_QUERY_KEY = 'project-documents'
+export const PROJECT_DOCUMETS_QUERY_KEY = 'project-documents'
 
 export const useDocuments = (projectId: string) => {
 

@@ -12,13 +12,13 @@ export default function Documents() {
             <div className="flex justify-between items-center gap-4">
                 <h1 className="text-2xl">Documents</h1>
             </div>
-            <div className="flex flex-col md:flex-row justify-between py-4 w-full gap-4 overflow-x-auto">
+            <div className="flex flex-col md:flex-row justify-between py-4 w-full gap-4">
                 <SearchInput
-                    placeholder="Find a member..."
+                    placeholder="Find a file..."
                     value={""}
                     onChange={() => { }}
                 />
-                <div className="flex gap-2">
+                <div className="flex gap-2 pb-2">
                     <AddFolderModal />
                     <AddDocumentModal />
                     <UploadDocument />

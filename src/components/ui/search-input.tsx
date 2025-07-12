@@ -4,7 +4,7 @@ import { Search } from "lucide-react"
 
 export const SearchInput = ({ className, type, ...props }: React.ComponentProps<"input">) => {
     return (
-        <div className="relative">
+        <div className="relative w-full flex items-center">
             <Input
                 type={type}
                 className={cn("max-w-sm pl-8", className)} 

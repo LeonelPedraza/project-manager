@@ -49,7 +49,7 @@ export const DeleteMemberModal: FC<IProps> = ({ memberId, memberName }) => {
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete <strong className="text-white">"{memberName}"</strong> from the project.
+                        This action cannot be undone. This will permanently delete <strong>"{memberName}"</strong> from the project.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

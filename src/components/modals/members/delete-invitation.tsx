@@ -53,7 +53,7 @@ export const DeleteInvitationModal: FC<IProps> = ({ invitation }) => {
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the invitation to <strong className="text-white">"{invitation?.invited_email}"</strong>.
+                        This action cannot be undone. This will permanently delete the invitation to <strong>"{invitation?.invited_email}"</strong>.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

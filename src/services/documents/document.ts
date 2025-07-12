@@ -14,6 +14,7 @@ export const getDocuments = async ({projectId}: {projectId: string}) => {
                 parent_folder_id
             `)
             .eq('project_id', projectId)
+            .order('name', { ascending: true })
         if (error) {
             throw Error(error.message)
         }
