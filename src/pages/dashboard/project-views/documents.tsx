@@ -1,5 +1,5 @@
 import { FileTree } from "@/components/documents/file-tree";
-import { UploadDocument } from "@/components/documents/upload-document";
+// import { UploadDocument } from "@/components/documents/upload-document";
 import { AddDocumentModal } from "@/components/modals/documets.tsx/add-document";
 import { AddFolderModal } from "@/components/modals/documets.tsx/add-folder";
 import { SearchInput } from "@/components/ui/search-input";
@@ -21,7 +21,7 @@ export default function Documents() {
                 <div className="flex gap-2 pb-2">
                     <AddFolderModal />
                     <AddDocumentModal />
-                    <UploadDocument />
+                    {/* <UploadDocument /> */}
                 </div>
             </div>
             <div>

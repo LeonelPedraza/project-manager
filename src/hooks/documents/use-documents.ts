@@ -1,4 +1,4 @@
-import { createDocument, getDocuments } from "@/services/documents/document"
+import { copy_document, createDocument, getDocuments } from "@/services/documents/document"
 import type { Document } from "@/types/types"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
@@ -27,9 +27,21 @@ export const useDocuments = (projectId: string) => {
         }
     })
 
+    const copyDocument = useMutation({
+        mutationFn: copy_document,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [PROJECT_DOCUMETS_QUERY_KEY, projectId] })
+        },
+        onError: (error) => {
+            console.error('Error creating folder:', error.message)
+            return error
+        }
+    })
+
     return {
         documents: data,
         isLoading,
-        addDocument
+        addDocument,
+        copyDocument
     }
 }

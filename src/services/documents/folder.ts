@@ -75,6 +75,34 @@ export const rename_drive_item = async ({ newName, driveItemId, itemType }: Rena
     }
 }
 
+interface MoveFolder {
+    driveItemId: string
+    parentFolderId: string | null
+    projectId: string
+    itemType: DriveItemType
+}
+export const move_drive_item = async ({ driveItemId, parentFolderId, projectId, itemType }: MoveFolder) => {
+    try {
+        const { error } = await supabase.functions.invoke('move-drive-item', {
+            body: {
+                fileId: driveItemId,
+                parentFolderId,
+                projectId,
+                itemType
+            }
+        })
+        if (error) {
+            throw Error(error.message)
+        }
+        return itemType
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message)
+        }
+        throw new Error('An unknown error occurred during folder moving.')
+    }
+}
+
 interface RemoveFolder {
     driveItemId: string
     itemType: DriveItemType

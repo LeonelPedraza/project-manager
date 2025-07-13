@@ -41,7 +41,30 @@ export const createDocument = async (folderData: CreateDocument) => {
         if (error) {
             throw Error(error.message)
         }
-        console.log(data)
+        return data
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message)
+        }
+        throw new Error('An unknown error occurred during folder creating.')
+    }
+}
+
+interface CopyDocument {
+    fileId: string
+    fileName: string
+    mimeType: string
+    parentFolderId?: string
+    projectId: string
+}
+export const copy_document = async (folderData: CopyDocument) => {
+    try {
+        const { data, error } = await supabase.functions.invoke('copy-document', {
+            body: folderData
+        })
+        if (error) {
+            throw Error(error.message)
+        }
         return data
     } catch (error) {
         if (error instanceof Error) {

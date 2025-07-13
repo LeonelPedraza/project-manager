@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Folder, FileText, FileSpreadsheet, FileVideo, EllipsisVertical, Download, Pencil, Trash } from "lucide-react";
+import { Folder, FileText, FileSpreadsheet, FileVideo, EllipsisVertical, Pencil, Trash, Copy, FolderSymlink } from "lucide-react";
 import type { Document } from "@/types/types";
 import { useParams } from "react-router";
 import { useFolder } from "@/hooks/documents/use-folder";
@@ -16,6 +16,8 @@ import { Button } from "../ui/button";
 import { DRIVE_ITEM_TYPE, type DriveItemType } from "@/lib/enums/drive-item-type";
 import { RenameItemModal } from "../modals/documets.tsx/rename-item";
 import { DeleteDriveItemModal } from "../modals/documets.tsx/delete-item";
+import { toast } from "sonner";
+import { MoveDriveItemModal } from "../modals/documets.tsx/move-item";
 
 type FolderType = {
     id: string;
@@ -100,35 +102,70 @@ const DocumentNode = ({ document }: { document: Document }) => {
                 <Icon className="h-5 w-5" />
                 {document.name}
             </div>
-            <Actions currentName={document.name} driveItemId={document.drive_file_id} itemType={DRIVE_ITEM_TYPE.FILE} />
+            <Actions currentName={document.name} driveItemId={document.drive_file_id} itemType={DRIVE_ITEM_TYPE.FILE} folderParentId={document.parent_folder_id} mimeType={document.file_type} />
         </a>
 
     )
 }
 
-const Actions = ({ currentName, driveItemId, itemType }: { currentName: string, driveItemId: string, itemType: DriveItemType }) => {
+const Actions = ({ currentName, driveItemId, itemType, folderParentId, mimeType }: { currentName: string, driveItemId: string, itemType: DriveItemType, folderParentId?: string, mimeType?: string }) => {
+    const { projectId } = useParams()
     const [renameItemModalOpen, setRenameItemModalOpen] = useState(false)
+    const [moveItemModalOpen, setMoveItemModalOpen] = useState(false)
     const [deleteItemModalOpen, setDeleteItemModalOpen] = useState(false)
+    const { copyDocument } = useDocuments(projectId ?? '')
+    const copyDocumentHandler = () => {
+        try {
+            let pendingToastId: string | number | null = null
+            const data = {
+                fileId: driveItemId,
+                fileName: currentName,
+                mimeType: mimeType ?? '',
+                parentFolderId: folderParentId,
+                projectId: projectId ?? ''
+            }
+            pendingToastId = toast.loading("Copying file...")
+            copyDocument.mutate(data, {
+                onSuccess: () => {
+                    toast.success("File copied successfully", { id: pendingToastId })
+                    setRenameItemModalOpen(false)
+                },
+                onError: () => {
+                    toast.error("Error copying file", { id: pendingToastId })
+                    setRenameItemModalOpen(false)
+                }
+            })
+        } catch (error) {
+            console.error(error)
+            toast.error("Error copying file")
+        }        
+    }
+    
     return (
         <div className="flex gap-2 items-center">
-            <Button variant="ghost" className="h-6 w-6 hidden group-hover:flex">
-                <Download />
-            </Button>
-            <Button variant="ghost" className="h-6 w-6 hidden group-hover:flex" onClick={() => setRenameItemModalOpen(true)}>
+            <Button variant="ghost" className="h-6 w-6 hidden group-hover:flex" disabled={copyDocument.isPending} onClick={() => setRenameItemModalOpen(true)}>
                 <Pencil />
             </Button>
             <DropdownMenu>
-                <DropdownMenuTrigger className="cursor-pointer">
+                <DropdownMenuTrigger className="cursor-pointer" disabled={copyDocument.isPending}>
                     <EllipsisVertical />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="bottom" align="end">
-                    <DropdownMenuItem>
-                        <Download />
-                        Download
-                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setRenameItemModalOpen(true)}>
                         <Pencil />
                         Rename
+                    </DropdownMenuItem>
+                    {
+                        itemType === DRIVE_ITEM_TYPE.FILE &&
+                        <DropdownMenuItem onClick={copyDocumentHandler}>
+                            <Copy />
+                            Create copy
+                        </DropdownMenuItem>
+
+                    }
+                    <DropdownMenuItem onClick={() => setMoveItemModalOpen(true)}>
+                        <FolderSymlink />
+                        Move
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem variant="destructive" onClick={() => setDeleteItemModalOpen(true)}>
@@ -155,6 +192,15 @@ const Actions = ({ currentName, driveItemId, itemType }: { currentName: string, 
                     itemType={itemType}
                     open={deleteItemModalOpen}
                     setOpen={setDeleteItemModalOpen}
+                />
+            }
+            {
+                moveItemModalOpen &&
+                <MoveDriveItemModal 
+                    open={moveItemModalOpen}
+                    setOpen={setMoveItemModalOpen}
+                    driveItemId={driveItemId}
+                    itemType={itemType}
                 />
             }
         </div>
