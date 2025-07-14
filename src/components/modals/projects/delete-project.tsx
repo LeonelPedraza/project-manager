@@ -27,8 +27,14 @@ export const DeleteProjectModal: FC<IProps> = ({ project }) => {
     const handleDelete = async () => {
         try {
             const projectId = project.id || ''
-            removeProject.mutate({ id: projectId })
-            toast.success("Project deleted successfully")
+            removeProject.mutate({ id: projectId }, {
+                onSuccess: () => {
+                    toast.success("Project deleted successfully")
+                },
+                onError: () => {
+                    toast.error("Error deleting project")
+                }
+            })
         } catch (error) {
             console.error(error)
             toast.error("Error deleting project")

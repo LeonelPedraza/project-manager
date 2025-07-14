@@ -33,8 +33,14 @@ export const DeleteInvitationModal: FC<IProps> = ({ invitation }) => {
             return
         }
         try {
-            deleteInvitation.mutate({ id: invitation.id })
-            toast.success("Project deleted successfully")
+            deleteInvitation.mutate({ id: invitation.id }, {
+                onSuccess: () => {
+                    toast.success("Invitation deleted successfully")
+                },
+                onError: () => {
+                    toast.error("Error deleting invitation")
+                }
+            })
         } catch (error) {
             console.error(error)
             toast.error("Error deleting project")

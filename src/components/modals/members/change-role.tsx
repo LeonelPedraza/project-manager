@@ -54,10 +54,16 @@ export const ChangeRoleModal: FC<IProps> = ({ memberId, open, onClose }) => {
             changeMemberRole.mutate({
                 memberId,
                 roleId: selectedRole.id
+            }, {
+                onSuccess: () => {
+                    toast.success("Role changed successfully")
+                    reset()
+                    onClose()
+                },
+                onError: () => {
+                    toast.error("Error adding member")
+                }
             })
-            onClose()
-            reset()
-            toast.success("Project created successfully")
         } catch (error) {
             console.error(error)
             toast.error("Error creating project")

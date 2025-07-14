@@ -53,8 +53,8 @@ export const AddDocumentModal = () => {
                     reset()
                     setOpen(false)
                 },
-                onError: (error) => {
-                    toast.error(error.message)
+                onError: () => {
+                    toast.error('Error creating document')
                 }
             })
         } catch (error) {

@@ -48,8 +48,8 @@ export const MoveDriveItemModal = ({open, setOpen, driveItemId, itemType}: IProp
                     reset()
                     setOpen(false)
                 },
-                onError: (error) => {
-                    toast.error(error.message)
+                onError: () => {
+                    toast.error('Error moving item')
                 }
             })
         } catch (error) {

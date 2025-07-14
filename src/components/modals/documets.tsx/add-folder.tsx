@@ -43,8 +43,8 @@ export const AddFolderModal = () => {
                     reset()
                     setOpen(false)
                 },
-                onError: (error) => {
-                    toast.error(error.message)
+                onError: () => {
+                    toast.error('Error creating folder')
                 }
             })
         } catch (error) {

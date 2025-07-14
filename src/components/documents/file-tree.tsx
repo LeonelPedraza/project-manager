@@ -2,9 +2,8 @@ import { useState } from "react";
 import { Folder, FileText, FileSpreadsheet, FileVideo, EllipsisVertical, Pencil, Trash, Copy, FolderSymlink } from "lucide-react";
 import type { Document } from "@/types/types";
 import { useParams } from "react-router";
-import { useFolder } from "@/hooks/documents/use-folder";
 import { useDocuments } from "@/hooks/documents/use-documents";
-import { buildFolderTree } from "@/utils/build-tree";
+import { type TreeNode } from "@/utils/build-tree";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,12 +11,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Button } from "../ui/button";
 import { DRIVE_ITEM_TYPE, type DriveItemType } from "@/lib/enums/drive-item-type";
 import { RenameItemModal } from "../modals/documets.tsx/rename-item";
 import { DeleteDriveItemModal } from "../modals/documets.tsx/delete-item";
 import { toast } from "sonner";
 import { MoveDriveItemModal } from "../modals/documets.tsx/move-item";
+import { useSelectedProject } from "@/hooks/use-selected-project";
 
 type FolderType = {
     id: string;
@@ -33,31 +32,23 @@ const FILE_ICONS = {
     ppt: FileVideo
 }
 
-export function FileTree() {
-    const { projectId } = useParams()
-    const { folders } = useFolder(projectId ?? '')
-    const { documents } = useDocuments(projectId ?? '')
-    const folderTree = buildFolderTree(folders ?? [], documents ?? [])
+export function FileTree({ folderTree }: { folderTree: TreeNode[]}) {
 
-    return (
-        <div>
-            {folderTree.map(folder => (
-                <FolderNode key={folder.id} folder={folder} />
-            ))}
-            {
-                documents?.filter(doc => doc.parent_folder_id === null)?.map(doc => (
-                    <DocumentNode key={doc.id} document={doc} />
-                ))
-            }
-        </div>
-    );
+  return (
+    <div>
+      {folderTree.map((folder) => (
+        <FolderNode key={folder.id} folder={folder} />
+      ))}
+      
+    </div>
+  );
 }
 
-function FolderNode({ folder }: { folder: FolderType }) {
+export const FolderNode = ({ folder }: { folder: FolderType }) => {
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
-        if (folder.documents.length > 0) {
+        if (folder.documents.length > 0 || folder.children.length > 0) {
             setOpen(!open)
         }
     }
@@ -89,7 +80,7 @@ function FolderNode({ folder }: { folder: FolderType }) {
     );
 }
 
-const DocumentNode = ({ document }: { document: Document }) => {
+export const DocumentNode = ({ document }: { document: Document }) => {
     const Icon = FILE_ICONS[document.file_type] ?? FileText;
     return (
         <a
@@ -110,6 +101,7 @@ const DocumentNode = ({ document }: { document: Document }) => {
 
 const Actions = ({ currentName, driveItemId, itemType, folderParentId, mimeType }: { currentName: string, driveItemId: string, itemType: DriveItemType, folderParentId?: string, mimeType?: string }) => {
     const { projectId } = useParams()
+    const { selectedProjectPermissions } = useSelectedProject()
     const [renameItemModalOpen, setRenameItemModalOpen] = useState(false)
     const [moveItemModalOpen, setMoveItemModalOpen] = useState(false)
     const [deleteItemModalOpen, setDeleteItemModalOpen] = useState(false)
@@ -141,11 +133,11 @@ const Actions = ({ currentName, driveItemId, itemType, folderParentId, mimeType 
         }        
     }
     
+    if (!selectedProjectPermissions.has('documents:update')) {
+        return null
+    }
     return (
         <div className="flex gap-2 items-center">
-            <Button variant="ghost" className="h-6 w-6 hidden group-hover:flex" disabled={copyDocument.isPending} onClick={() => setRenameItemModalOpen(true)}>
-                <Pencil />
-            </Button>
             <DropdownMenu>
                 <DropdownMenuTrigger className="cursor-pointer" disabled={copyDocument.isPending}>
                     <EllipsisVertical />
@@ -167,11 +159,16 @@ const Actions = ({ currentName, driveItemId, itemType, folderParentId, mimeType 
                         <FolderSymlink />
                         Move
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem variant="destructive" onClick={() => setDeleteItemModalOpen(true)}>
-                        <Trash />
-                        Delete
-                    </DropdownMenuItem>
+                    {
+                        selectedProjectPermissions.has('documents:delete') &&
+                        <>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem variant="destructive" onClick={() => setDeleteItemModalOpen(true)}>
+                                <Trash />
+                                Delete
+                            </DropdownMenuItem>
+                        </>
+                    }
                 </DropdownMenuContent>
             </DropdownMenu>
             {

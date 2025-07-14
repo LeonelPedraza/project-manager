@@ -12,6 +12,7 @@ import Profile from './pages/dashboard/project-views/profile'
 import Overview from './pages/dashboard/project-views/overview'
 import Documents from './pages/dashboard/project-views/documents'
 import MembersView from './pages/dashboard/project-views/members-view'
+import NotesView from './pages/dashboard/project-views/notes'
 
 function App() {
   const { user, isLoading } = useUser();
@@ -34,6 +35,7 @@ function App() {
             <Route index element={<Overview />} />
             <Route path='documents' element={<Documents />} />
             <Route path='members' element={<MembersView />} />
+            <Route path='notes' element={<NotesView />} />
           </Route>
         </Route>
       </Routes>

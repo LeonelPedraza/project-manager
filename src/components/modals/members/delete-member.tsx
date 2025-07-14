@@ -29,8 +29,14 @@ export const DeleteMemberModal: FC<IProps> = ({ memberId, memberName }) => {
 
     const handleDelete = async () => {
         try {
-            deleteMember.mutate({ memberId })
-            toast.success("Project deleted successfully")
+            deleteMember.mutate({ memberId }, {
+                onSuccess: () => {
+                    toast.success("Member deleted successfully")
+                },
+                onError: () => {
+                    toast.error("Error deleting member")
+                }
+            })
         } catch (error) {
             console.error(error)
             toast.error("Error deleting project")

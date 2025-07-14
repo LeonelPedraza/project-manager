@@ -20,10 +20,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useRoles } from "@/hooks/roles/use-roles"
 import { useMembers } from "@/hooks/members/use-member"
 import { useParams } from "react-router"
-import { UserRoundPlus } from "lucide-react"
+import { StickyNote } from "lucide-react"
 
 
-export const AddMemberModal = () => {
+export const AddNoteModal = () => {
     const { projectId } = useParams()
 
     const { addMember } = useMembers(projectId)
@@ -73,14 +73,14 @@ export const AddMemberModal = () => {
         <Dialog>
             <DialogTrigger asChild>
                 <Button>
-                    <UserRoundPlus />
-                    Add member
+                    <StickyNote />
+                    Add note
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <DialogHeader>
-                        <DialogTitle>Add member</DialogTitle>
+                        <DialogTitle>Add note</DialogTitle>
                         <DialogDescription>
                             Envía invitaciones por correo electrónico a nuevos miembros para unirse al proyecto.
                         </DialogDescription>

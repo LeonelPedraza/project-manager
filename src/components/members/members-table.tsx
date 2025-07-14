@@ -129,7 +129,10 @@ export const MembersTable = () => {
                         value={(table.getColumn("username")?.getFilterValue() as string) ?? ""}
                         onChange={(event) => table.getColumn("username")?.setFilterValue(event.target.value)}
                     />
-                    <AddMemberModal />
+                    {
+                        selectedProjectPermissions.has('members:create') &&
+                        <AddMemberModal />
+                    }
                 </div>
             </div>
             <div className="max-w-dvw overflow-x-auto">

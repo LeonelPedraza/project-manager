@@ -47,10 +47,16 @@ export const NewProjectModal: FC<IProps> = ({ open, onClose }) => {
 
     const onSubmit = (data: z.infer<typeof formSchema>) => {
         try {
-            addProject.mutate({...data})
-            onClose()
-            reset()
-            toast.success("Project created successfully")
+            addProject.mutate({...data}, {
+                onSuccess: () => {
+                    toast.success("Project created successfully")
+                    onClose()
+                    reset()
+                },
+                onError: () => {
+                    toast.error("Error creating project")
+                }
+            })
         } catch (error) {
             console.error(error)
             toast.error("Error creating project")

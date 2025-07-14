@@ -40,8 +40,7 @@ export const DeleteDriveItemModal: FC<IProps> = ({ itemName, driveItemId, itemTy
                     toast.success("Item deleted successfully");
                     setOpen(false);
                 },
-                onError: (error) => {
-                    console.error(error);
+                onError: () => {
                     toast.error("Error deleting project");
                 }
             });

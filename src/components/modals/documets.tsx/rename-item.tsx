@@ -42,12 +42,12 @@ export const RenameItemModal = ({ currentName, driveItemId, itemType, open, setO
         try {            
             renameDriveItem.mutate(data, {
                 onSuccess: () => {
-                    toast.success("Folder created successfully")
+                    toast.success("Item renamed successfully")
                     reset()
                     setOpen(false)
                 },
-                onError: (error) => {
-                    toast.error(error.message)
+                onError: () => {
+                    toast.error('Error renaming item')
                 }
             })
         } catch (error) {

@@ -57,9 +57,15 @@ export const EditProjectModal: FC<IProps> = ({ project, open, onClose, setProjec
     const onSubmit = (data: z.infer<typeof formSchema>) => {
         try {
             const projectId = project.id || ''
-            modifyProject.mutate({ id: projectId, updateFields: data })
-            closeModal()
-            toast.success("Project created successfully")
+            modifyProject.mutate({ id: projectId, updateFields: data }, {
+                onSuccess: () => {
+                    toast.success("Project updated successfully")
+                    closeModal()
+                },
+                onError: () => {
+                    toast.error("Error updating project")
+                }
+            })
         } catch (error) {
             console.error(error)
             toast.error("Error creating project")
