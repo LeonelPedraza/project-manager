@@ -22,7 +22,6 @@ import { useMembers } from "@/hooks/members/use-member"
 import { useParams } from "react-router"
 import { StickyNote } from "lucide-react"
 
-
 export const AddNoteModal = () => {
     const { projectId } = useParams()
 
@@ -77,7 +76,7 @@ export const AddNoteModal = () => {
                     Add note
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-4xl h-5/6">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <DialogHeader>
                         <DialogTitle>Add note</DialogTitle>
@@ -86,9 +85,50 @@ export const AddNoteModal = () => {
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4">
+                        <div className="grid grid-cos-1 sm:grid-cols-2 gap-4">
+                            <div className="grid gap-3">
+                                <Label htmlFor="email" className="flex items-center">
+                                    Email <span className="text-red-500">*</span>
+                                </Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder="member@gmail.com"
+                                    className={errors.email ? "border-red-500" : ""}
+                                    required
+                                    {...register('email')}
+                                />
+                                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="role">Color</Label>
+                                <Controller
+                                    name="role"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <SelectTrigger id="role" className={errors.role ? "border-red-500" : ""}>
+                                                <SelectValue placeholder="Selecciona el rol" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {
+                                                    roles.map(({ id, name }) => (
+                                                        <SelectItem value={name} key={id}>{name}</SelectItem>
+                                                    ))
+                                                }
+                                            </SelectContent>
+                                        </Select>
+                                    )}
+                                />
+                                {errors.role && <p className="text-red-500 text-sm">{errors.role.message}</p>}
+                            </div>
+                        </div>
                         <div className="grid gap-3">
                             <Label htmlFor="email" className="flex items-center">
-                                Email <span className="text-red-500">*</span>
+                                Description <span className="text-red-500">*</span>
                             </Label>
                             <Input
                                 id="email"
@@ -99,32 +139,6 @@ export const AddNoteModal = () => {
                                 {...register('email')}
                             />
                             {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-                        </div>
-                        <div className="grid gap-3">
-                            <Label htmlFor="role">Rol <span className="text-red-500">*</span></Label>
-                            <Controller
-                                name="role"
-                                control={control}
-                                render={({ field }) => (
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                        required
-                                    >
-                                        <SelectTrigger id="role" className={errors.role ? "border-red-500" : ""}>
-                                            <SelectValue placeholder="Selecciona el rol" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {
-                                                roles.map(({ id, name }) => (
-                                                    <SelectItem value={name} key={id}>{name}</SelectItem>
-                                                ))
-                                            }
-                                        </SelectContent>
-                                    </Select>
-                                )}
-                            />
-                            {errors.role && <p className="text-red-500 text-sm">{errors.role.message}</p>}
                         </div>
                     </div>
                     <DialogFooter>
