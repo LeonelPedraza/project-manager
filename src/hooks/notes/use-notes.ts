@@ -1,4 +1,4 @@
-import { createNote, getNotes } from "@/services/notes"
+import { createNote, getNotes, removeNote, updateNote } from "@/services/notes"
 import type { Note } from "@/types/types"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
@@ -26,9 +26,42 @@ export const useNotes = (projectId: string) => {
         }
     })
 
+    const editNote = useMutation({
+        mutationFn: updateNote,
+        onSuccess: (updatedNote: Note) => {
+            queryClient.setQueryData([NOTES_QUERY_KEY], (oldNotes: Note[]) => {
+                return oldNotes.map((item) =>
+                    item.id === updatedNote.id ?
+                        {
+                            ...updatedNote
+                        } :
+                        item
+                )
+            })
+        },
+        onError: (error) => {
+            console.error('Error updating note:', error.message)
+            return error
+        }
+    })
+
+    const deleteNote = useMutation({
+        mutationFn: removeNote,
+        onSuccess: (deletedNoteId) => {
+            queryClient.setQueryData([NOTES_QUERY_KEY], (oldNotes: Note[]) => {
+                return oldNotes.filter(({id}) => id !== deletedNoteId)
+            })
+        },
+        onError: (error) => {
+            console.error('Error deleting note:', error.message)
+        }
+    })
+
     return {
         notes: data || [],
         addNote,
+        editNote,
+        deleteNote,
         isLoading,
         isError,
         error,

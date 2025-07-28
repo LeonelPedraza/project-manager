@@ -26,9 +26,7 @@ export default function NotesView() {
                     notes?.map((note) => (
                         <StickyNote
                             key={note.id}
-                            title={note.title}
-                            description={note.description}
-                            color={note.color}
+                            note={note}
                         />
                     ))
                 }

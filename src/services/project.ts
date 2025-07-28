@@ -93,10 +93,11 @@ export const updateProject = async ({ id, updateFields }: { id: string, updateFi
                 project_type, 
                 favorite
             `)
+            .single()
         if (error) {
             throw Error(error.message)
         }
-        return data[0]
+        return data
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
