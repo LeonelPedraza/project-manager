@@ -64,6 +64,13 @@ export interface Document {
     status: string
 }
 
+export interface Note {
+    id: string
+    title: string
+    color: string
+    description: string
+    content: object
+}
 
 
 // Duplicate Role interface removed; merged above.
