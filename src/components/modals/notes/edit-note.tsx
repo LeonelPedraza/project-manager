@@ -40,7 +40,7 @@ interface IProps {
     note: Note
 }
 
-export const EditNoteModal = ({note}: IProps) => {
+export const EditNoteModal = ({ note }: IProps) => {
     const { projectId } = useParams()
     const { editNote } = useNotes(projectId ?? '')
     const [open, setOpen] = useState(false);
@@ -49,35 +49,35 @@ export const EditNoteModal = ({note}: IProps) => {
         immediatelyRender: false,
         shouldRerenderOnTransaction: false,
         editorProps: {
-          attributes: {
-            autocomplete: "off",
-            autocorrect: "off",
-            autocapitalize: "off",
-            "aria-label": "Main content area, start typing to enter text.",
-            class: "simple-editor",
-          },
+            attributes: {
+                autocomplete: "off",
+                autocorrect: "off",
+                autocapitalize: "off",
+                "aria-label": "Main content area, start typing to enter text.",
+                class: "simple-editor",
+            },
         },
         extensions: [
-          StarterKit.configure({
-            horizontalRule: false,
-            link: {
-              openOnClick: false,
-              enableClickSelection: true,
-            },
-          }),
-          HorizontalRule,
-          TextAlign.configure({ types: ["heading", "paragraph"] }),
-          TaskList,
-          TaskItem.configure({ nested: true }),
-          Highlight.configure({ multicolor: true }),
-          Image,
-          Typography,
-          Superscript,
-          Subscript,
-          Selection
+            StarterKit.configure({
+                horizontalRule: false,
+                link: {
+                    openOnClick: false,
+                    enableClickSelection: true,
+                },
+            }),
+            HorizontalRule,
+            TextAlign.configure({ types: ["heading", "paragraph"] }),
+            TaskList,
+            TaskItem.configure({ nested: true }),
+            Highlight.configure({ multicolor: true }),
+            Image,
+            Typography,
+            Superscript,
+            Subscript,
+            Selection
         ],
         content: note.content,
-      })
+    })
 
     const formSchema = z.object({
         title: z.string().min(1).max(50),
@@ -199,7 +199,7 @@ export const EditNoteModal = ({note}: IProps) => {
                             <Label htmlFor="email" className="flex items-center">
                                 Content
                             </Label>
-                            <SimpleEditor editor={editor}/>
+                            <SimpleEditor editor={editor} />
                         </div>
                     </div>
                     <DialogFooter className="mt-auto mb-0">
@@ -207,7 +207,7 @@ export const EditNoteModal = ({note}: IProps) => {
                             <Button variant="outline" disabled={editNote.isPending}>Cancel</Button>
                         </DialogClose>
                         <Button type="submit" disabled={editNote.isPending} className="">
-                            {editNote.isPending ? 'Updating...' : 'Update'} 
+                            {editNote.isPending ? 'Updating...' : 'Update'}
                         </Button>
                     </DialogFooter>
                 </form>

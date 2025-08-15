@@ -48,27 +48,30 @@ export default function DashboardLayout() {
                                 </Breadcrumb>
                             </div>
                             {/* Mobile Sidebar */}
-                            <Drawer>
-                                <DrawerTrigger className="md:hidden">
-                                    <Menu />
-                                </DrawerTrigger>
-                                <DrawerContent>
-                                    <SidebarMenu className="px-4 pt-8 pb-16">
-                                        {sidebarItems.map((item) => (
-                                            <SidebarMenuItem key={item.title}>
-                                                <SidebarMenuButton asChild tooltip={item.title}>
-                                                    <Link to={`${projectId}/${item.to}`}>
-                                                        <DrawerClose className="flex gap-4 text-white/70">
-                                                            <item.icon size={20} />
-                                                            <span>{item.title}</span>
-                                                        </DrawerClose>
-                                                    </Link>
-                                                </SidebarMenuButton>
-                                            </SidebarMenuItem>
-                                        ))}
-                                    </SidebarMenu>
-                                </DrawerContent>
-                            </Drawer>
+                            {
+                                projectId &&
+                                <Drawer>
+                                    <DrawerTrigger className="md:hidden">
+                                        <Menu />
+                                    </DrawerTrigger>
+                                    <DrawerContent>
+                                        <SidebarMenu className="px-4 pt-8 pb-16">
+                                            {sidebarItems.map((item) => (
+                                                <SidebarMenuItem key={item.title}>
+                                                    <SidebarMenuButton asChild tooltip={item.title}>
+                                                        <Link to={`${projectId}/${item.to}`}>
+                                                            <DrawerClose className="flex gap-4">
+                                                                <item.icon size={20} />
+                                                                <span>{item.title}</span>
+                                                            </DrawerClose>
+                                                        </Link>
+                                                    </SidebarMenuButton>
+                                                </SidebarMenuItem>
+                                            ))}
+                                        </SidebarMenu>
+                                    </DrawerContent>
+                                </Drawer>
+                            }
                         </div>
                     </header>
                     <div className="flex-col gap-4 py-4 px-4 md:px-8">
