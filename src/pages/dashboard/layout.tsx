@@ -13,11 +13,18 @@ import {
     DrawerClose
 } from "@/components/ui/drawer"
 import { sidebarItems } from "@/lib/sidebar-items"
+import { useEffect } from "react";
 
 export default function DashboardLayout() {
 
     const { projectId } = useParams()
     const { leftSidebarOpen, setLeftSideBarOpen, rightSidebarOpen, setRightSideBarOpen } = useAppState()
+
+    useEffect(() => {
+        if (projectId) {
+            setLeftSideBarOpen(false)
+        }
+    }, [projectId, setLeftSideBarOpen])
 
     return (
         <ProjectProvider projectId={projectId ?? ""}>
