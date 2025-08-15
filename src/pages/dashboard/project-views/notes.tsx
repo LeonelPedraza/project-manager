@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 
 export default function NotesView() {
     const { projectId } = useParams()
-    const { notes } = useNotes(projectId ?? '')
+    const { notes, isLoading } = useNotes(projectId ?? '')
 
     return (
         <div className="flex flex-col gap-4">
@@ -22,6 +22,7 @@ export default function NotesView() {
                 <AddNoteModal />
             </div>
             <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {isLoading && <span>Loading...</span>}
                 {
                     notes?.map((note) => (
                         <StickyNote
