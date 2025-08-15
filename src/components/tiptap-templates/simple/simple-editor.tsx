@@ -155,7 +155,7 @@ const MobileToolbarContent = ({
   </>
 )
 
-export function SimpleEditor({editor}: {editor: Editor | null}) {
+export function SimpleEditor({editor, showToolbar = true}: {editor: Editor | null, showToolbar?: boolean}) {
   const isMobile = useIsMobile()
   const windowSize = useWindowSize()
   const [mobileView, setMobileView] = React.useState<
@@ -179,29 +179,32 @@ export function SimpleEditor({editor}: {editor: Editor | null}) {
   return (
     <div className="simple-editor-wrapper">
       <EditorContext.Provider value={{ editor }}>
-        <Toolbar
-          ref={toolbarRef}
-          style={
-            isMobile
-              ? {
-                  bottom: `calc(100% - ${windowSize.height - bodyRect.y}px)`,
-                }
-              : {}
-          }
-        >
-          {mobileView === "main" ? (
-            <MainToolbarContent
-              onHighlighterClick={() => setMobileView("highlighter")}
-              onLinkClick={() => setMobileView("link")}
-              isMobile={isMobile}
-            />
-          ) : (
-            <MobileToolbarContent
-              type={mobileView === "highlighter" ? "highlighter" : "link"}
-              onBack={() => setMobileView("main")}
-            />
-          )}
-        </Toolbar>
+        {
+          showToolbar &&
+          <Toolbar
+            ref={toolbarRef}
+            style={
+              isMobile
+                ? {
+                    bottom: `calc(100% - ${windowSize.height - bodyRect.y}px)`,
+                  }
+                : {}
+            }
+          >
+            {mobileView === "main" ? (
+              <MainToolbarContent
+                onHighlighterClick={() => setMobileView("highlighter")}
+                onLinkClick={() => setMobileView("link")}
+                isMobile={isMobile}
+              />
+            ) : (
+              <MobileToolbarContent
+                type={mobileView === "highlighter" ? "highlighter" : "link"}
+                onBack={() => setMobileView("main")}
+              />
+            )}
+          </Toolbar>
+        }
 
         <EditorContent
           editor={editor}
