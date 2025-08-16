@@ -81,7 +81,7 @@ export default function DashboardLayout() {
                             }
                         </div>
                     </header>
-                    <div className="flex-col gap-4 py-4 px-4 md:px-8">
+                    <div className="flex-col gap-4 py-4 px-4 md:px-8 h-full">
                         <Outlet />
                     </div>
                 </SidebarInset>

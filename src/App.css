@@ -76,6 +76,13 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* superficies del tablero (modo claro) */
+  --kanban-column: 240 5% 97%;
+  /* > background */
+  --kanban-card: 0 0% 100%;
+  /* blanco sólido */
+  --kanban-border: 240 5% 84%;
+  /* borde visible en light */
 }
 
 .dark {
@@ -110,12 +117,20 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  /* superficies del tablero (modo oscuro) */
+  --kanban-column: 240 5% 12.5%;
+  /* < background oscuro */
+  --kanban-card: 240 6% 8%;
+  /* más oscuro que column */
+  --kanban-border: 240 5% 20%;
+  /* borde visible en dark */
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
