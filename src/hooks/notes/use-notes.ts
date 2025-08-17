@@ -8,7 +8,7 @@ export const useNotes = (projectId: string) => {
     const queryClient = useQueryClient()
 
     const { data, isLoading, isError, error } = useQuery<Note[]>({
-        queryKey: [NOTES_QUERY_KEY],
+        queryKey: [NOTES_QUERY_KEY, projectId],
         queryFn: () => getNotes({ projectId: projectId ?? '' }),
         staleTime: 5 * 60 * 1000,
         refetchOnWindowFocus: false,
@@ -29,7 +29,7 @@ export const useNotes = (projectId: string) => {
     const editNote = useMutation({
         mutationFn: updateNote,
         onSuccess: (updatedNote: Note) => {
-            queryClient.setQueryData([NOTES_QUERY_KEY], (oldNotes: Note[]) => {
+            queryClient.setQueryData([NOTES_QUERY_KEY, projectId], (oldNotes: Note[]) => {
                 return oldNotes.map((item) =>
                     item.id === updatedNote.id ?
                         {
@@ -48,7 +48,7 @@ export const useNotes = (projectId: string) => {
     const deleteNote = useMutation({
         mutationFn: removeNote,
         onSuccess: (deletedNoteId) => {
-            queryClient.setQueryData([NOTES_QUERY_KEY], (oldNotes: Note[]) => {
+            queryClient.setQueryData([NOTES_QUERY_KEY, projectId], (oldNotes: Note[]) => {
                 return oldNotes.filter(({id}) => id !== deletedNoteId)
             })
         },

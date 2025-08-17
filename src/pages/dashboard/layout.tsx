@@ -88,7 +88,7 @@ export default function DashboardLayout() {
                 {projectId && (
                     <SidebarProvider
                         open={rightSidebarOpen}
-                        className="static hidden md:inline-flex w-max max-h-max"
+                        className="hidden md:inline-flex w-max max-h-max"
                     >
                         <ProjectSidebar
                             onMouseEnter={() => setRightSideBarOpen(true)}

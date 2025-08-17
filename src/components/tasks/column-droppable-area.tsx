@@ -18,7 +18,7 @@ export const ColumnDroppableArea = ({ column, cards }: { column: TDraggableColum
                 >
                     {cards.map((card, i) => {
                         return (
-                            <DraggableCard card={card} index={i} />
+                            <DraggableCard card={card} index={i} key={card.id} />
                         )
                     })}
                     {prov.placeholder /* IMPORTANTE para layout */}
