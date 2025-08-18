@@ -25,10 +25,10 @@ import {
 import { MoreHorizontal } from "lucide-react"
 
 import type { Invitation } from "@/types/types"
-import { DeleteInvitationModal } from "../modals/members/delete-invitation"
+import { DeleteInvitationModal } from "./delete-invitation"
 import { useMembers } from "@/hooks/members/use-member"
 import { SearchInput } from "../ui/search-input"
-import { AddMemberModal } from "../modals/members/add-members"
+import { AddMemberModal } from "./add-members"
 
 export const InvitationssTable = () => {
 

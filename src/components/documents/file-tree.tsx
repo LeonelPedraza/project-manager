@@ -12,10 +12,10 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { DRIVE_ITEM_TYPE, type DriveItemType } from "@/lib/enums/drive-item-type";
-import { RenameItemModal } from "../modals/documets.tsx/rename-item";
-import { DeleteDriveItemModal } from "../modals/documets.tsx/delete-item";
+import { RenameItemModal } from "./rename-item";
+import { DeleteDriveItemModal } from "./delete-item";
 import { toast } from "sonner";
-import { MoveDriveItemModal } from "../modals/documets.tsx/move-item";
+import { MoveDriveItemModal } from "./move-item";
 import { useSelectedProject } from "@/hooks/use-selected-project";
 
 type FolderType = {

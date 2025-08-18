@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { createCard, createStage, getTasks } from "@/services/tasks"
+import { createCard, createStage, deleteCard, deleteStage, getTasks } from "@/services/tasks"
 import type { TaskStage } from "@/types/tasks.types"
 // import type { TDraggableCard, TDraggableColumn } from "@/types/tasks.types"
 
@@ -15,6 +15,19 @@ export const useTasks = ({projectId}: {projectId: string}) => {
         staleTime: 5 * 60 * 1000,
         refetchOnWindowFocus: false,
         refetchOnReconnect: true
+    })
+
+    const removeStage = useMutation({
+        mutationFn: deleteStage,
+        onSuccess: (stageId) => {
+            queryClient.setQueryData([TASKS_STAGES_QUERY_KEY, projectId], (oldStages: TaskStage[]) => {
+                return oldStages.filter((stage) => stage.id !== stageId)
+            })
+        },
+        onError: (error) => {
+            console.error('Error deleting stage:', error.message)
+            return error
+        }
     })
 
     const addStage = useMutation({
@@ -51,13 +64,33 @@ export const useTasks = ({projectId}: {projectId: string}) => {
         }
     })
 
+    const removeCard = useMutation({
+        mutationFn: deleteCard,
+        onSuccess: (cardId) => {
+            queryClient.setQueryData([TASKS_STAGES_QUERY_KEY, projectId], (oldStages: TaskStage[]) => {
+                return oldStages.map((stage) => {
+                    return {
+                        ...stage,
+                        cards: stage.cards.filter((card) => card.id !== cardId)
+                    }
+                })
+            })
+        },
+        onError: (error) => {
+            console.error('Error deleting card:', error.message)
+            return error
+        }
+    })
+
     return {
         stages: stages.data || [],
         loading: stages.isLoading,
         error: stages.error,
         refetch: stages.refetch,
         addStage,
-        addCard
+        removeStage,
+        addCard,
+        removeCard
     }
 
 }

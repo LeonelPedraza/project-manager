@@ -3,10 +3,10 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle } from './card';
 import { Button } from './button';
 import { MoreHorizontal } from 'lucide-react';
 import { useSelectedProject } from '@/hooks/use-selected-project';
-import { EditNoteModal } from '../modals/notes/edit-note';
+import { EditNoteModal } from '../notes/edit-note';
 import type { Note } from '@/types/types';
-import { DeleteNoteModal } from '../modals/notes/delete-note';
-import { DetailsNoteModal } from '../modals/notes/details';
+import { DeleteNoteModal } from '../notes/delete-note';
+import { DetailsNoteModal } from '../notes/details';
 import { useState } from 'react';
 
 interface IProps {

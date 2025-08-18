@@ -17,7 +17,7 @@ export type TaskStage = {
 export type TaskCard = {
     id: string;
     title: string;
-    content: object | null;
+    description?: object | null;
     position: number;
     stage_id: string;
 }

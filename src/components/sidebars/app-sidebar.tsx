@@ -18,7 +18,7 @@ import { TeamSwitcher } from "./team-switcher"
 import { NavProjects } from "./nav-projects"
 import { NavUser } from "./nav-user"
 import { SearchForm } from "./search-form"
-import { NewProjectModal } from "@/components/modals/projects/create-project"
+import { NewProjectModal } from "@/components/projects/create-project"
 import { useState } from "react"
 
 // This is sample data.

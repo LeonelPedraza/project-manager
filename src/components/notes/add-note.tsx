@@ -100,6 +100,7 @@ export const AddNoteModal = () => {
                     toast.success("Note added successfully")
                     setOpen(false)
                     reset()
+                    editor?.destroy()
                 },
                 onError: () => {
                     toast.error("Error adding note")

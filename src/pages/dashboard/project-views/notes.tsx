@@ -1,4 +1,4 @@
-import { AddNoteModal } from "@/components/modals/notes/add-note";
+import { AddNoteModal } from "@/components/notes/add-note";
 import { SearchInput } from "@/components/ui/search-input";
 import StickyNote from "@/components/ui/sticky-note";
 import { useNotes } from "@/hooks/notes/use-notes";

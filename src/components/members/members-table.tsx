@@ -26,13 +26,13 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
 import { useMembers } from "@/hooks/members/use-member"
-import { ChangeRoleModal } from "../modals/members/change-role"
+import { ChangeRoleModal } from "./change-role"
 import { useParams } from "react-router"
 import { useUser } from "@/hooks/use-user"
 import { useSelectedProject } from "@/hooks/use-selected-project"
-import { DeleteMemberModal } from "../modals/members/delete-member"
+import { DeleteMemberModal } from "./delete-member"
 import { SearchInput } from "../ui/search-input"
-import { AddMemberModal } from "../modals/members/add-members"
+import { AddMemberModal } from "./add-members"
 
 export const MembersTable = () => {
 

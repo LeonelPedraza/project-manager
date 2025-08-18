@@ -73,11 +73,11 @@ export default function TasksView() {
     }
 
     return (
-        <div className="flex flex-col gap-4 h-full w-11/12">
+        <div className="flex flex-col gap-4 h-full w-full">
             <div className="flex justify-between items-center gap-4">
                 <h1 className="text-2xl">Tasks</h1>
             </div>
-            <div className='flex-1 overflow-hidden'>
+            <div className='flex-1 overflow-hidden w-11/12'>
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId="board" direction='horizontal' type='COLUMN'>
                         {(provided) => (
@@ -96,7 +96,6 @@ export default function TasksView() {
                                 {provided.placeholder}
                                 <div className='shrink-0'>
                                     <NewStage projectId={projectId} />
-
                                 </div>
                             </div>
                         )}

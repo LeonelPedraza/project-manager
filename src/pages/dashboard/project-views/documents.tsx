@@ -1,7 +1,7 @@
 import { DocumentNode, FileTree } from "@/components/documents/file-tree";
 // import { UploadDocument } from "@/components/documents/upload-document";
-import { AddDocumentModal } from "@/components/modals/documets.tsx/add-document";
-import { AddFolderModal } from "@/components/modals/documets.tsx/add-folder";
+import { AddDocumentModal } from "@/components/documents/documents/add-document";
+import { AddFolderModal } from "@/components/documents/folders/add-folder";
 import { SearchInput } from "@/components/ui/search-input";
 import { useDocuments } from "@/hooks/documents/use-documents";
 import { useFolder } from "@/hooks/documents/use-folder";

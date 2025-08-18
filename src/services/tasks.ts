@@ -47,8 +47,29 @@ export const createStage = async ({ projectId, stageData }: { projectId: string,
     }
 }
 
+export const deleteStage = async ({ stageId }: { stageId: string }) => {
+    try {
+        const { error } = await supabase
+            .from('task_stages')
+            .delete()
+            .eq('id', stageId)
+        if (error) {
+            throw Error(error.message)
+        }
+        return stageId
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error al eliminar la tarea:', error.message);
+        } else {
+            console.error('Error al eliminar la tarea:', error);
+        }
+        return null;
+    }
+}
+
 interface NewCardData {
     title: string
+    description?: object | null
     position: number
     stageId: string
 }
@@ -56,6 +77,7 @@ export const createCard = async ({ cardData }: { cardData: NewCardData }) => {
     try {
         const { data, error } = await supabase.from('task_cards').insert({
             title: cardData.title,
+            description: cardData.description,
             position: cardData.position,
             stage_id: cardData.stageId,
         })
@@ -70,6 +92,26 @@ export const createCard = async ({ cardData }: { cardData: NewCardData }) => {
             console.error('Error al crear la tarea:', error.message);
         } else {
             console.error('Error al crear la tarea:', error);
+        }
+        return null;
+    }
+}
+
+export const deleteCard = async ({ cardId }: { cardId: string }) => {
+    try {
+        const { error } = await supabase
+            .from('task_cards')
+            .delete()
+            .eq('id', cardId)
+        if (error) {
+            throw Error(error.message)
+        }
+        return cardId
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error al eliminar la tarea:', error.message);
+        } else {
+            console.error('Error al eliminar la tarea:', error);
         }
         return null;
     }
